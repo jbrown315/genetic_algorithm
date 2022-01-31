@@ -10,13 +10,12 @@ import javax.swing.JComponent;
 public class ChromosomeComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 	
-	Chromosome chromosome;
+	Chromosome chromosome = new Chromosome();
 
 	@Override
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		Graphics2D g2d = (Graphics2D) graphics;
-		chromosome = new Chromosome();
 		chromosome.drawOn(g2d);
 
 
