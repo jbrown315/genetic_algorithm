@@ -10,6 +10,8 @@ public class ClickListener implements MouseListener {
 	private int y1;
 	private boolean border = true;
 	
+	int rows;
+	
 	public ClickListener(ChromosomeComponent component) {
 		this.component = component;
 	}
@@ -26,7 +28,8 @@ public class ClickListener implements MouseListener {
 		// TODO Auto-generated method stub
 		x1 = e.getX();
 		y1 = e.getY();
-		if(x1 > 300 || y1 > 300) {
+		rows = this.component.chromosome.rows;
+		if(x1 > 300 || y1 > rows*30) {
 			border = false;
 		}
 		else {
@@ -35,11 +38,11 @@ public class ClickListener implements MouseListener {
 			y1 = y1/30;
 		}
 		if(border) {
-			if(this.component.chromosome.bits.get(x1 * 10 + y1) == 1) {
-				this.component.chromosome.bits.set(x1 * 10 + y1, 0);
+			if(this.component.chromosome.bits.get(y1 * 10 + x1) == 1) {
+				this.component.chromosome.bits.set(y1 * 10 + x1, 0);
 			}
 			else {
-				this.component.chromosome.bits.set(x1 * 10 + y1, 1);
+				this.component.chromosome.bits.set(y1 * 10 + x1, 1);
 			}
 		}
 		this.component.repaint();

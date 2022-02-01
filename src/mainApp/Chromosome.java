@@ -9,6 +9,7 @@ public class Chromosome {
 	private static final int WIDTH = 30;
 	
 	ArrayList<Integer> bits;
+	int rows = 10;
 	
 	public Chromosome() {
 		bits = new ArrayList<Integer>();
@@ -21,8 +22,8 @@ public class Chromosome {
 	public void drawOn(Graphics2D g2) {
 
 		for(int x = 0; x < 10; x++) {
-			for(int i = 0; i < 10; i++) {
-				int index = 10 * x + i;
+			for(int i = 0; i < rows; i++) {
+				int index = 10 * i + x;
 				if (bits.get(index) == 1) {
 					g2.setColor(Color.GREEN);
 

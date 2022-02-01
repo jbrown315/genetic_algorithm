@@ -11,7 +11,7 @@ public class File {
 	
 	String name = null;
 	ChromosomeComponent com;
-	ArrayList<Integer> in = new ArrayList<Integer>();
+	ArrayList<Integer> in;
 	
 	public File(ChromosomeComponent com) {
 		this.com = com;
@@ -22,13 +22,14 @@ public class File {
 	}
 	
 	public ArrayList<Integer> in() {
+		in = new ArrayList<Integer>();
 		JFileChooser chooser = new JFileChooser();
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
 	        "Text Files", "txt");
 	    chooser.setFileFilter(filter);
 	    int returnVal = chooser.showOpenDialog(chooser);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	       System.out.println("You chose to open this file: " + chooser.getSelectedFile());
+	       //System.out.println("You chose to open this file: " + chooser.getSelectedFile());
 	       Scanner myReader;
 		try {
 			myReader = new Scanner(chooser.getSelectedFile());

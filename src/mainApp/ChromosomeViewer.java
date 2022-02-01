@@ -50,6 +50,7 @@ public class ChromosomeViewer {
 	        public void actionPerformed(ActionEvent e) {
 				drawingComponent.chromosome.bits = file.in();
 				System.out.println(drawingComponent.chromosome.bits);
+				drawingComponent.chromosome.rows = drawingComponent.chromosome.bits.size() / 10;
 				drawingComponent.repaint();
 	    	}
 	    });
