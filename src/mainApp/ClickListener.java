@@ -43,7 +43,7 @@ public class ClickListener implements MouseListener {
 			}
 		}
 		this.component.repaint();
-		this.component.file.in();
+		//this.component.file.in();
 //		this.component.chromosome.bits.get()
 
 	}
