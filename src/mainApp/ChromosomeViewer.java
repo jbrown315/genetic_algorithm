@@ -5,13 +5,13 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
+import java.util.Random;
 
 
 
@@ -47,17 +47,22 @@ public class ChromosomeViewer {
 		JPanel panel = new JPanel();
 		JButton load = new JButton("Load File");
 		JButton save = new JButton("Save File");
+		JButton mutate = new JButton("Mutate");
+		JLabel rate = new JLabel("M Rate: _/N");
+		JTextField input = new JTextField(5);
 		
 		this.viewerFrame.add(panel, BorderLayout.SOUTH);
 		
 		panel.add(load);
 		panel.add(save);
-		
+		panel.add(mutate);
+		panel.add(rate);
+		panel.add(input);
+				
 		load.addActionListener(new ActionListener() {
 			@Override
 	        public void actionPerformed(ActionEvent e) {
 				drawingComponent.chromosome.bits = file.in(name);
-				//System.out.println(drawingComponent.chromosome.bits);
 				drawingComponent.chromosome.rows = drawingComponent.chromosome.bits.size() / 10;
 				drawingComponent.repaint();
 	    	}
@@ -68,6 +73,43 @@ public class ChromosomeViewer {
 	        public void actionPerformed(ActionEvent e) {
 				file.ex(drawingComponent.chromosome.bits);
 	    	}
+	    });
+		
+		mutate.addActionListener(new ActionListener() {
+			@Override
+	        public void actionPerformed(ActionEvent e) {
+				if(input.getText().equals("")) {
+					System.out.println("ERROR: No Mutation Rate!");
+				}
+				else {
+					try {
+						int num = Integer.valueOf(input.getText());
+						if(num < 0 || num > 100) {
+							System.out.println("ERROR: Mutation rate out of range!");
+						}
+						else {
+							Random rand = new Random();
+							for(int i = 0; i < drawingComponent.chromosome.bits.size(); i++) {
+								if(num > rand.nextInt(100)) {
+									if(name.getText().charAt(name.getText().length() - 1) != ')') {
+										name.setText(name.getText() + " (mutated)");
+									}
+									if(drawingComponent.chromosome.bits.get(i) == 1) {
+										drawingComponent.chromosome.bits.set(i, 0);
+									}
+									else {
+										drawingComponent.chromosome.bits.set(i, 1);
+									}
+								}
+							}
+						}
+					}
+					catch (NumberFormatException e1) {
+						e1.printStackTrace();
+					}
+					drawingComponent.repaint();
+		    	}
+			}
 	    });
 
 		
