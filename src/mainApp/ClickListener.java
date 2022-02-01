@@ -3,17 +3,21 @@ package mainApp;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JLabel;
+
 public class ClickListener implements MouseListener {
 
 	private ChromosomeComponent component;
 	private int x1;
 	private int y1;
 	private boolean border = true;
+	private JLabel label;
 	
 	int rows;
 	
-	public ClickListener(ChromosomeComponent component) {
+	public ClickListener(ChromosomeComponent component, JLabel label) {
 		this.component = component;
+		this.label = label;
 	}
 	
 	@Override
@@ -43,6 +47,9 @@ public class ClickListener implements MouseListener {
 			}
 			else {
 				this.component.chromosome.bits.set(y1 * 10 + x1, 1);
+			}
+			if(this.label.getText().charAt(this.label.getText().length() - 1) != ')') {
+				this.label.setText(this.label.getText() + " (mutated)");
 			}
 		}
 		this.component.repaint();

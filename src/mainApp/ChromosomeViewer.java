@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -16,8 +17,8 @@ import java.util.HashMap;
 
 public class ChromosomeViewer {
 	public static final Dimension VIEWER_SIZE = new Dimension(500, 400);
-	private JFrame viewerFrame;
 	
+	JFrame viewerFrame;
 	File file;
 
 	// *********************************************************************
@@ -36,6 +37,11 @@ public class ChromosomeViewer {
 		ChromosomeComponent drawingComponent = new ChromosomeComponent();
 		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
+		JLabel name = new JLabel();
+		name.setText("New Chromosome");
+		
+		viewerFrame.add(name, BorderLayout.NORTH);
+		
 		file = new File(drawingComponent);
 		
 		JPanel panel = new JPanel();
@@ -48,42 +54,15 @@ public class ChromosomeViewer {
 		load.addActionListener(new ActionListener() {
 			@Override
 	        public void actionPerformed(ActionEvent e) {
-				drawingComponent.chromosome.bits = file.in();
-				System.out.println(drawingComponent.chromosome.bits);
+				drawingComponent.chromosome.bits = file.in(name);
+				//System.out.println(drawingComponent.chromosome.bits);
 				drawingComponent.chromosome.rows = drawingComponent.chromosome.bits.size() / 10;
 				drawingComponent.repaint();
 	    	}
 	    });
 
-//		public static void main(String[] args) {
-//			String nButtonsString = JOptionPane
-//					.showInputDialog("How many buttons would you like?");
-//			int nButtons = Integer.parseInt(nButtonsString);
-//			JFrame myFrame = new JFrame("Linear Lights Out!");
-//			HashMap<Integer, JButton> buttons = new HashMap<Integer, JButton>();
-//			JPanel panel1 = new JPanel();
-//			JPanel panel2 = new JPanel();
-//			//myFrame.add(panel1, BorderLayout.CENTER);
-//			myFrame.add(panel2, BorderLayout.SOUTH);
-//			// you'll want to think about how you want to manage the state of the game
-//			//also you want to add some buttons and stuff
-//			
-//			gameReset(nButtons, panel1, buttons, myFrame);
-//
-//			JButton newGame = new JButton("New Game");
-//			JButton quit = new JButton("Quit");
-//			
-//		    newGame.addActionListener(new ActionListener() {
-//		    	@Override
-//		        public void actionPerformed(ActionEvent e) {
-//		        	//gameReset(nButtons, panel1, buttons, myFrame);
-//		    		myFrame.dispose();
-//		    		main(args);
-//		    		
-//		    	}
-//		    });
 		
-		MouseListener click = new ClickListener(drawingComponent);
+		MouseListener click = new ClickListener(drawingComponent, name);
 		drawingComponent.addMouseListener(click);
 		this.viewerFrame.setVisible(true);
 	} // runApp

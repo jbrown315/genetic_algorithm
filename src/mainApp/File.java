@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class File {
@@ -21,7 +23,7 @@ public class File {
 		this.name = name;
 	}
 	
-	public ArrayList<Integer> in() {
+	public ArrayList<Integer> in(JLabel label) {
 		in = new ArrayList<Integer>();
 		JFileChooser chooser = new JFileChooser();
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -37,6 +39,7 @@ public class File {
 	        for(int i = 0; i < data.length(); i++) {
 	        	in.add(Character.getNumericValue(data.charAt(i)));
 	        }
+	        label.setText(chooser.getSelectedFile().getName());
 		    myReader.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
