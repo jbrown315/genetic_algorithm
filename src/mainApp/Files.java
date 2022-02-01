@@ -1,6 +1,8 @@
 package mainApp;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,17 +11,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class File {
+public class Files {
 	
 	String name = null;
 	ChromosomeComponent com;
 	ArrayList<Integer> in;
 	
-	public File(ChromosomeComponent com) {
+	public Files(ChromosomeComponent com) {
 		this.com = com;
 	}
 	
-	public File(String name) {
+	public Files(String name) {
 		this.name = name;
 	}
 	
@@ -48,5 +50,23 @@ public class File {
 	      
 	    }
 		return in;
+	}
+	
+	public void ex(ArrayList<Integer> output) {
+	    String result = "";
+	    for(int i : output) {
+	    	result = result + Integer.toString(i);
+	    }
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setCurrentDirectory(new File("user.dir"));
+	    int retrival = chooser.showSaveDialog(null);
+	    if (retrival == JFileChooser.APPROVE_OPTION) {
+	        try (FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt")) {
+	            fw.write(result);
+	            fw.close();
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    }
 	}
 }

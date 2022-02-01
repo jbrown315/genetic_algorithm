@@ -19,7 +19,7 @@ public class ChromosomeViewer {
 	public static final Dimension VIEWER_SIZE = new Dimension(500, 400);
 	
 	JFrame viewerFrame;
-	File file;
+	Files file;
 
 	// *********************************************************************
 
@@ -42,14 +42,16 @@ public class ChromosomeViewer {
 		
 		viewerFrame.add(name, BorderLayout.NORTH);
 		
-		file = new File(drawingComponent);
+		file = new Files(drawingComponent);
 		
 		JPanel panel = new JPanel();
 		JButton load = new JButton("Load File");
+		JButton save = new JButton("Save File");
 		
 		this.viewerFrame.add(panel, BorderLayout.SOUTH);
 		
 		panel.add(load);
+		panel.add(save);
 		
 		load.addActionListener(new ActionListener() {
 			@Override
@@ -58,6 +60,13 @@ public class ChromosomeViewer {
 				//System.out.println(drawingComponent.chromosome.bits);
 				drawingComponent.chromosome.rows = drawingComponent.chromosome.bits.size() / 10;
 				drawingComponent.repaint();
+	    	}
+	    });
+		
+		save.addActionListener(new ActionListener() {
+			@Override
+	        public void actionPerformed(ActionEvent e) {
+				file.ex(drawingComponent.chromosome.bits);
 	    	}
 	    });
 

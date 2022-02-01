@@ -11,7 +11,7 @@ public class ChromosomeComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 	
 	Chromosome chromosome = new Chromosome();
-	File file = new File(this);
+	Files file = new Files(this);
 
 	@Override
 	protected void paintComponent(Graphics graphics) {
