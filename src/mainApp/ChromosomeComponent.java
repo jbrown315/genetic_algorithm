@@ -20,4 +20,4 @@ public class ChromosomeComponent extends JComponent {
 
 
 	} // paintComponent
-} // DrawingComponent
+}
