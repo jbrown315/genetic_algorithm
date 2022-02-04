@@ -23,9 +23,9 @@ public class ChromosomeViewer {
 
 	// *********************************************************************
 
-	private void runApp() {
-		final int frameLocX = 250;
-		final int frameLocY = 250;
+	public void runApp() {
+		final int frameLocX = 100;
+		final int frameLocY = 100;
 		
 		this.viewerFrame = new JFrame();
 		this.viewerFrame.setSize(VIEWER_SIZE);

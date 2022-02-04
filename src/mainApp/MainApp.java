@@ -11,7 +11,7 @@ public class MainApp {
 	
 	
 	private void runApp() {
-		System.out.println("Write your cool genetic algorithm here!");		
+			
 	} // runApp
 
 	/**
@@ -20,7 +20,12 @@ public class MainApp {
 	 */
 	public static void main(String[] args) {
 		MainApp mainApp = new MainApp();
+		ChromosomeViewer chromosome = new ChromosomeViewer();
+		PopulationViewer population = new PopulationViewer();
+		
 		mainApp.runApp();		
+		chromosome.runApp();
+		population.runApp();
 	} // main
 
 }
