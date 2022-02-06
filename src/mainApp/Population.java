@@ -8,11 +8,17 @@ public class Population {
 	private static final int WIDTH = 5;
 	
 	ArrayList<Chromosome> population;
+	ArrayList<Chromosome> newPop;
 	
 	public Population() {
-		population = new ArrayList<Chromosome>();
-		for(int i = 0; i < 100; i++) {
-			population.add(new Chromosome());
+		if(newPop == null) {
+			population = new ArrayList<Chromosome>();
+			for(int i = 0; i < 100; i++) {
+				population.add(new Chromosome());
+			}
+		}
+		else {
+			population = newPop;
 		}
 	}
 	
@@ -40,6 +46,9 @@ public class Population {
 				g2.translate(60,0);
 				count++;
 			}
+			Fitness fit = new Fitness(chr);
+			chr.fitness = fit.countsOnes();
+			//System.out.println(chr.fitness);
 		}
 	}
 }

@@ -10,6 +10,7 @@ public class Chromosome {
 	
 	ArrayList<Integer> bits;
 	int rows = 10;
+	int fitness;
 	
 	public Chromosome() {
 		bits = new ArrayList<Integer>();
@@ -44,6 +45,7 @@ public class Chromosome {
 				g2.drawRect(0 + x*HEIGHT,0 + i * WIDTH, WIDTH, HEIGHT);
 			}
 			
-		}		
+		}
+		
 	}
 }
