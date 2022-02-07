@@ -20,11 +20,11 @@ public class MainApp {
 	 */
 	public static void main(String[] args) {
 		MainApp mainApp = new MainApp();
-		ChromosomeViewer chromosome = new ChromosomeViewer();
+		//BestFitViewer bestFit = new BestFitViewer();
 		PopulationViewer population = new PopulationViewer();
 		
 		mainApp.runApp();		
-		chromosome.runApp();
+		//bestFit.runApp();
 		population.runApp();
 	} // main
 

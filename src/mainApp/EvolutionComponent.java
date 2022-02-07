@@ -24,24 +24,24 @@ public class EvolutionComponent extends JComponent {
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		Graphics2D g2d = (Graphics2D) graphics;
-		g2d.drawLine(50,50,50,250); //LV
-		g2d.drawLine(50,50,600,50);//TH
-		g2d.drawLine(600,50,600,250);//RV
-		g2d.drawLine(50,250,600,250);//BH
+		g2d.drawLine(50,20,50,220); //LV
+		g2d.drawLine(50,20,700,20);//TH
+		g2d.drawLine(700,20,700,220);//RV
+		g2d.drawLine(50,220,700,220);//BH
 		for(int i = 0; i < 11; i++) {
-			g2d.drawLine(45, 50 + 20 * i, 55, 50 + 20 * i);
-			g2d.drawString(String.valueOf(100 - 10 * i), 20, 50 + 20 * i);
+			g2d.drawLine(45, 20 + 20 * i, 55, 20 + 20 * i);
+			g2d.drawString(String.valueOf(100 - 10 * i), 20, 20 + 20 * i);
 		}
 		for(int i = 0; i < 11; i++) {
-			g2d.drawLine(50 + 55* i, 255, 50 + 55* i, 245);
-			g2d.drawString(String.valueOf(100 - 10 * i), 595 - 55 * i, 270);
+			g2d.drawLine(50 + 65* i, 225, 50 + 65* i, 215);
+			g2d.drawString(String.valueOf(100 - 10 * i), 695 - 65 * i, 240);
 		}
 		int y1 = population.bestFit;
 		g2d.setColor(Color.GREEN);
 		
 		if(runs >= 0) {
-			bcoords.add((int) (50+runs*5.5));
-			bcoords.add(250-y1*2);
+			bcoords.add((int) (50+runs*6.5));
+			bcoords.add(220-y1*2);
 		}
 		if(bcoords.size() > 2) {
 			for(int i = 0; i < bcoords.size()-2; i+=2) {
@@ -54,8 +54,8 @@ public class EvolutionComponent extends JComponent {
 		g2d.setColor(Color.ORANGE);
 		
 		if(runs >= 0) {
-			acoords.add((int) (50+runs*5.5));
-			acoords.add(250-y2*2);
+			acoords.add((int) (50+runs*6.5));
+			acoords.add(220-y2*2);
 		}
 		if(acoords.size() > 2) {
 			for(int i = 0; i < acoords.size()-2; i+=2) {
@@ -68,8 +68,8 @@ public class EvolutionComponent extends JComponent {
 		g2d.setColor(Color.RED);
 		
 		if(runs >= 0) {
-			wcoords.add((int) (50+runs*5.5));
-			wcoords.add(250-y3*2);
+			wcoords.add((int) (50+runs*6.5));
+			wcoords.add(220-y3*2);
 		}
 		if(wcoords.size() > 2) {
 			for(int i = 0; i < wcoords.size()-2; i+=2) {
