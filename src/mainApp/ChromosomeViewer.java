@@ -24,8 +24,8 @@ public class ChromosomeViewer {
 	// *********************************************************************
 
 	public void runApp() {
-		final int frameLocX = 100;
-		final int frameLocY = 100;
+		final int frameLocX = 125;
+		final int frameLocY = 20;
 		
 		this.viewerFrame = new JFrame();
 		this.viewerFrame.setSize(VIEWER_SIZE);
@@ -88,20 +88,7 @@ public class ChromosomeViewer {
 							System.out.println("ERROR: Mutation rate out of range!");
 						}
 						else {
-							Random rand = new Random();
-							for(int i = 0; i < drawingComponent.chromosome.bits.size(); i++) {
-								if(num > rand.nextInt(100)) {
-									if(name.getText().charAt(name.getText().length() - 1) != ')') {
-										name.setText(name.getText() + " (mutated)");
-									}
-									if(drawingComponent.chromosome.bits.get(i) == 1) {
-										drawingComponent.chromosome.bits.set(i, 0);
-									}
-									else {
-										drawingComponent.chromosome.bits.set(i, 1);
-									}
-								}
-							}
+							drawingComponent.chromosome.mutate(num, name);
 						}
 					}
 					catch (NumberFormatException e1) {

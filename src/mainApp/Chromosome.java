@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JLabel;
+
 public class Chromosome {
 	private static final int HEIGHT = 30;
 	private static final int WIDTH = 30;
@@ -47,5 +49,36 @@ public class Chromosome {
 			
 		}
 		
+	}
+	
+	public void mutate(int num) {
+		Random rand = new Random();
+		for(int i = 0; i < bits.size(); i++) {
+			if(num > rand.nextInt(100)) {
+				if(bits.get(i) == 1) {
+					bits.set(i, 0);
+				}
+				else {
+					bits.set(i, 1);
+				}
+			}
+		}
+	}
+	
+	public void mutate(int num, JLabel name) {
+		Random rand = new Random();
+		for(int i = 0; i < bits.size(); i++) {
+			if(num > rand.nextInt(100)) {
+				if(name.getText().charAt(name.getText().length() - 1) != ')') {
+					name.setText(name.getText() + " (mutated)");
+				}
+				if(bits.get(i) == 1) {
+					bits.set(i, 0);
+				}
+				else {
+					bits.set(i, 1);
+				}
+			}
+		}
 	}
 }

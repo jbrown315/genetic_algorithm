@@ -2,6 +2,7 @@ package mainApp;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Population {
 	private static final int HEIGHT = 5;
@@ -50,5 +51,25 @@ public class Population {
 			chr.fitness = fit.countsOnes();
 			//System.out.println(chr.fitness);
 		}
+	}
+	
+	public void truncate() {
+		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
+		ArrayList<Integer> fits = new ArrayList<Integer>();
+		for(int i = 0; i < population.size(); i++) {
+			fits.add(population.get(i).fitness);
+		}
+		Collections.sort(fits);
+		Collections.reverse(fits);
+		for(int i = 0; i < fits.size(); i++) {
+			for(int x = 0; x < fits.size(); x++) {
+				if(population.get(x).fitness == fits.get(i)) {
+					newpop.add(population.get(x));
+					population.remove(x);
+					break;
+				}
+			}
+		}
+		population = newpop;
 	}
 }
