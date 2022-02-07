@@ -19,6 +19,8 @@ public class EvolutionViewer {
 	Files file;
 	Timer t;
 	int iterations = 0;
+	EvolutionComponent drawingComponent;
+	JButton run;
 
 	// *********************************************************************
 
@@ -32,7 +34,7 @@ public class EvolutionViewer {
 		this.viewerFrame.setLocation(frameLocX, frameLocY);
 		viewerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		EvolutionComponent drawingComponent = new EvolutionComponent();
+		drawingComponent = new EvolutionComponent();
 		
 		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
@@ -41,7 +43,7 @@ public class EvolutionViewer {
 
 		
 		JPanel panel = new JPanel();
-		JButton run = new JButton("Start");
+		run = new JButton("Start");
 		
 		this.viewerFrame.add(panel, BorderLayout.SOUTH);
 		panel.add(run);
@@ -61,10 +63,9 @@ public class EvolutionViewer {
 				else {
 					t.start();
 				}
-				}
+			}
 	    });
-		
-		
+				
 		this.viewerFrame.setVisible(true);
 	} // runApp
 
@@ -76,7 +77,12 @@ public class EvolutionViewer {
 			public void actionPerformed(ActionEvent arg0) {
 				component.population.truncate();
 				component.repaint();
-				iterations++;
+				drawingComponent.repaint();
+				drawingComponent.runs++;
+				drawingComponent.population = component.population;
+				if(drawingComponent.runs >= 100) {
+					run.doClick();
+				}
 			}
 		});
 	}

@@ -11,6 +11,10 @@ public class Population {
 	ArrayList<Chromosome> population;
 	ArrayList<Chromosome> newPop;
 	
+	int bestFit = 0;
+	int aveFit = 0;
+	int worstFit = 0;
+	
 	public Population() {
 		if(newPop == null) {
 			population = new ArrayList<Chromosome>();
@@ -102,6 +106,12 @@ public class Population {
 			Fitness fit = new Fitness(chr);
 			chr.fitness = fit.countsOnes();
 		}
-		System.out.println("FIT OF BEST: " + population.get(0).fitness);
+		//System.out.println("FIT OF BEST: " + population.get(0).fitness);
+		bestFit = population.get(0).fitness;
+		for(Chromosome chr : population) {
+			aveFit += chr.fitness;
+		}
+		aveFit = aveFit/population.size();
+		worstFit = population.get(99).fitness;
 	}
 }
