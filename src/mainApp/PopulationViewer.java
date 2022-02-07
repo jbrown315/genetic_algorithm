@@ -1,14 +1,8 @@
 package mainApp;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 
 
@@ -34,19 +28,9 @@ public class PopulationViewer {
 		PopulationComponent drawingComponent = new PopulationComponent();
 		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
-		JPanel panel = new JPanel();
-		JButton loop = new JButton("Loop");
-		
-		this.viewerFrame.add(panel, BorderLayout.SOUTH);
-		panel.add(loop);
-
-		loop.addActionListener(new ActionListener() {
-			@Override
-	        public void actionPerformed(ActionEvent e) {
-				drawingComponent.population.truncate();
-				drawingComponent.repaint();
-	    	}
-	    });
+		EvolutionViewer test = new EvolutionViewer();
+		test.alterPop(drawingComponent);
+		test.runApp();
 		
 		this.viewerFrame.setVisible(true);
 	} // runApp

@@ -16,7 +16,5 @@ public class PopulationComponent extends JComponent {
 		super.paintComponent(graphics);
 		Graphics2D g2d = (Graphics2D) graphics;
 		population.drawOn(g2d);
-
-
-	} // paintComponent
+	}
 }

@@ -56,6 +56,9 @@ public class Population {
 	public void truncate() {
 		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
 		ArrayList<Integer> fits = new ArrayList<Integer>();
+		Chromosome temp = new Chromosome();
+		ArrayList<Integer> temp2 = new ArrayList<Integer>();
+
 		for(int i = 0; i < population.size(); i++) {
 			fits.add(population.get(i).fitness);
 		}
@@ -71,5 +74,34 @@ public class Population {
 			}
 		}
 		population = newpop;
+		
+		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+		for(int i = 0; i < population.size()/2; i++) {
+			temp = new Chromosome();
+			temp2 = new ArrayList<Integer>();
+			for(int bit : population.get(i).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			finalpop.add(temp);
+		}
+		population = new ArrayList<Chromosome>();
+		for(int i = 0; i < finalpop.size(); i++) {
+			for(int x = 0; x < 2; x++) {
+				temp = new Chromosome();
+				temp2 = new ArrayList<Integer>();
+				for(int bit : finalpop.get(i).bits) {
+					temp2.add(bit);
+				}
+				temp.bits = temp2;
+				population.add(temp);
+			}
+		}
+		for(Chromosome chr : population) {
+			chr = chr.mutate(1);
+			Fitness fit = new Fitness(chr);
+			chr.fitness = fit.countsOnes();
+		}
+		System.out.println("FIT OF BEST: " + population.get(0).fitness);
 	}
 }

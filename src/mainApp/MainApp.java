@@ -22,12 +22,10 @@ public class MainApp {
 		MainApp mainApp = new MainApp();
 		ChromosomeViewer chromosome = new ChromosomeViewer();
 		PopulationViewer population = new PopulationViewer();
-		EvolutionViewer evolution = new EvolutionViewer();
 		
 		mainApp.runApp();		
 		chromosome.runApp();
 		population.runApp();
-		evolution.runApp();
 	} // main
 
 }

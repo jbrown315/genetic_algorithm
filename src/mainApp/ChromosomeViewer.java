@@ -11,8 +11,6 @@ import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.Random;
-
 
 
 public class ChromosomeViewer {
@@ -99,7 +97,6 @@ public class ChromosomeViewer {
 			}
 	    });
 
-		
 		MouseListener click = new ClickListener(drawingComponent, name);
 		drawingComponent.addMouseListener(click);
 		this.viewerFrame.setVisible(true);

@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 
 public class EvolutionViewer {
@@ -16,6 +17,8 @@ public class EvolutionViewer {
 	
 	JFrame viewerFrame;
 	Files file;
+	Timer t;
+	int iterations = 0;
 
 	// *********************************************************************
 
@@ -30,31 +33,56 @@ public class EvolutionViewer {
 		viewerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		EvolutionComponent drawingComponent = new EvolutionComponent();
-		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
-		JPanel panel = new JPanel();
-		JButton loop = new JButton("Loop");
+		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
 		JLabel rate = new JLabel("Fitness over Generations", SwingConstants.CENTER);
 		this.viewerFrame.add(rate, BorderLayout.NORTH);
 
 		
+		JPanel panel = new JPanel();
+		JButton run = new JButton("Start");
+		
 		this.viewerFrame.add(panel, BorderLayout.SOUTH);
-		panel.add(loop);
+		panel.add(run);
 
-		loop.addActionListener(new ActionListener() {
+		run.addActionListener(new ActionListener() {
 			@Override
 	        public void actionPerformed(ActionEvent e) {
-	    	}
+				if(run.getText().equals("Start")) {
+					run.setText("Stop");
+				}
+				else {
+					run.setText("Start");
+				}
+				if(run.getText().equals("Start")) {
+					t.stop();
+				}
+				else {
+					t.start();
+				}
+				}
 	    });
+		
 		
 		this.viewerFrame.setVisible(true);
 	} // runApp
 
 	// *********************************************************************
 
+	public void alterPop(PopulationComponent component) {
+		t = new Timer(50, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				component.population.truncate();
+				component.repaint();
+				iterations++;
+			}
+		});
+	}
+	
 	public static void main(String[] args) {
-		PopulationViewer app = new PopulationViewer();
+		EvolutionViewer app = new EvolutionViewer();
 		app.runApp();
 	} // main
 } // ViewerMain

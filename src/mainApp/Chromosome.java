@@ -51,7 +51,7 @@ public class Chromosome {
 		
 	}
 	
-	public void mutate(int num) {
+	public Chromosome mutate(int num) {
 		Random rand = new Random();
 		for(int i = 0; i < bits.size(); i++) {
 			if(num > rand.nextInt(100)) {
@@ -63,9 +63,10 @@ public class Chromosome {
 				}
 			}
 		}
+		return this;
 	}
 	
-	public void mutate(int num, JLabel name) {
+	public Chromosome mutate(int num, JLabel name) {
 		Random rand = new Random();
 		for(int i = 0; i < bits.size(); i++) {
 			if(num > rand.nextInt(100)) {
@@ -80,5 +81,6 @@ public class Chromosome {
 				}
 			}
 		}
+		return this;
 	}
 }
