@@ -12,6 +12,7 @@ public class PopulationViewer {
 	
 	JFrame viewerFrame;
 	Files file;
+	PopulationComponent drawingComponent;
 
 	// *********************************************************************
 
@@ -25,12 +26,12 @@ public class PopulationViewer {
 		this.viewerFrame.setLocation(frameLocX, frameLocY);
 		viewerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		PopulationComponent drawingComponent = new PopulationComponent();
+		drawingComponent = new PopulationComponent();
 		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
-		EvolutionViewer evo = new EvolutionViewer();
-		evo.alterPop(drawingComponent);
-		evo.runApp();
+		//EvolutionViewer evo = new EvolutionViewer();
+		//evo.alterPop(drawingComponent);
+		//evo.runApp();
 		
 		this.viewerFrame.setVisible(true);
 	} // runApp

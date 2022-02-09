@@ -14,11 +14,24 @@ public class Population {
 	int bestFit = 0;
 	int aveFit = 0;
 	int worstFit = 0;
+	int len = 100;
 	
 	public Population() {
 		if(newPop == null) {
 			population = new ArrayList<Chromosome>();
-			for(int i = 0; i < 100; i++) {
+			for(int i = 0; i < len; i++) {
+				population.add(new Chromosome());
+			}
+		}
+		else {
+			population = newPop;
+		}
+	}
+	
+	public Population(int len) {
+		if(newPop == null) {
+			population = new ArrayList<Chromosome>();
+			for(int i = 0; i < len; i++) {
 				population.add(new Chromosome());
 			}
 		}
@@ -57,27 +70,29 @@ public class Population {
 		}
 	}
 	
-	public void truncate() {
-		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
-		ArrayList<Integer> fits = new ArrayList<Integer>();
+	public void truncate(int mrate) {
+//		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
+//		ArrayList<Integer> fits = new ArrayList<Integer>();
 		Chromosome temp = new Chromosome();
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
 
-		for(int i = 0; i < population.size(); i++) {
-			fits.add(population.get(i).fitness);
-		}
-		Collections.sort(fits);
-		Collections.reverse(fits);
-		for(int i = 0; i < fits.size(); i++) {
-			for(int x = 0; x < fits.size(); x++) {
-				if(population.get(x).fitness == fits.get(i)) {
-					newpop.add(population.get(x));
-					population.remove(x);
-					break;
-				}
-			}
-		}
-		population = newpop;
+//		for(int i = 0; i < population.size(); i++) {
+//			fits.add(population.get(i).fitness);
+//		}
+//		Collections.sort(fits);
+//		Collections.reverse(fits);
+//		for(int i = 0; i < fits.size(); i++) {
+//			for(int x = 0; x < fits.size(); x++) {
+//				if(population.get(x).fitness == fits.get(i)) {
+//					newpop.add(population.get(x));
+//					population.remove(x);
+//					break;
+//				}
+//			}
+//		}
+//		population = newpop;
+		
+		population = trunSort(population);
 		
 		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
 		for(int i = 0; i < population.size()/2; i++) {
@@ -102,16 +117,44 @@ public class Population {
 			}
 		}
 		for(Chromosome chr : population) {
-			chr = chr.mutate(1);
+			chr = chr.mutate(mrate);
 			Fitness fit = new Fitness(chr);
 			chr.fitness = fit.countsOnes();
 		}
 		//System.out.println("FIT OF BEST: " + population.get(0).fitness);
+		population = trunSort(population);
+		ArrayList<Integer> test = new ArrayList<Integer>();
 		bestFit = population.get(0).fitness;
 		for(Chromosome chr : population) {
 			aveFit += chr.fitness;
+			test.add(chr.fitness);
 		}
 		aveFit = aveFit/population.size();
-		worstFit = population.get(99).fitness;
+		worstFit = population.get(population.size() - 1).fitness;
+//		System.out.println("BEST: " + bestFit);
+//		System.out.println("AVE: " + aveFit);
+//		System.out.println("WORST: " + worstFit);
+//		System.out.println("SIZE: " + population.size());
+//		System.out.println(test);
+	}
+	
+	public ArrayList<Chromosome> trunSort(ArrayList<Chromosome> current) {
+		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
+		ArrayList<Integer> fits = new ArrayList<Integer>();
+		for(int i = 0; i < population.size(); i++) {
+			fits.add(population.get(i).fitness);
+		}
+		Collections.sort(fits);
+		Collections.reverse(fits);
+		for(int i = 0; i < fits.size(); i++) {
+			for(int x = 0; x < fits.size(); x++) {
+				if(population.get(x).fitness == fits.get(i)) {
+					newpop.add(population.get(x));
+					population.remove(x);
+					break;
+				}
+			}
+		}
+		return newpop;
 	}
 }

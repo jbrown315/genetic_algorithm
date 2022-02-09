@@ -26,7 +26,14 @@ public class EvolutionViewer {
 	int iterations = 0;
 	EvolutionComponent drawingComponent;
 	BestFitViewer bestFitViewer;
+	PopulationViewer popViewer;
 	JButton run;
+	
+	boolean graphed = false;
+	
+	String choice;
+	int mrate;
+	int popSize;
 
 	// *********************************************************************
 
@@ -45,6 +52,10 @@ public class EvolutionViewer {
 		bestFitViewer = new BestFitViewer();
 		
 		bestFitViewer.runApp();
+		
+		popViewer = new PopulationViewer();
+		
+		popViewer.runApp();
 		
 		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
@@ -88,7 +99,11 @@ public class EvolutionViewer {
 		run.setFont(new Font("Serif", Font.BOLD, 10));
 		title.setFont(new Font("Serif", Font.BOLD, 15));
 
-		
+		input.setText("1");
+		input2.setText("100");
+		input3.setText("100");
+		input4.setText("100");
+
 		panel.add(rate);
 		panel.add(input);
 		panel.add(select);
@@ -105,43 +120,72 @@ public class EvolutionViewer {
 		panel.add(input5);
 		panel.add(run);
 
-
+		alterPop();
 		run.addActionListener(new ActionListener() {
 			@Override
 	        public void actionPerformed(ActionEvent e) {
-				if(run.getText().equals("Start")) {
-					run.setText("Stop");
+				if(run.getText().equals("Restart")) {
+					
+					runApp();
+				}
+				choice = (String) selection.getSelectedItem();
+				if(input.getText().equals("")) {
+					System.out.println("Invalid Mutation Rate!");
+				}
+				else if(input.getText().equals("")) {
+					System.out.println("Invalid Population Size!");
 				}
 				else {
-					run.setText("Start");
-				}
-				if(run.getText().equals("Start")) {
-					t.stop();
-				}
-				else {
-					t.start();
+					mrate = Integer.valueOf(input.getText());
+					popSize = Integer.valueOf(input2.getText());
+					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 100) {
+						if(choice.equals("Truncate")) {
+							if(run.getText().equals("Start")) {
+								run.setText("Stop");
+							}
+							else {
+								run.setText("Start");
+							}
+							if(run.getText().equals("Start")) {
+								t.stop();
+							}
+							else {
+								popViewer.drawingComponent.population = new Population(popSize);
+								t.start();
+							}
+						}
+						else {
+							System.out.println("INVALID");
+						}
+					}
+					else {
+						System.out.println("Invalid Mutation Rate!");
+					}
 				}
 			}
 	    });
 				
+		
 		this.viewerFrame.setVisible(true);
 	} // runApp
 
 	// *********************************************************************
 
-	public void alterPop(PopulationComponent component) {
+	public void alterPop() {
 		t = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				component.population.truncate();
-				component.repaint();
+//				popViewer.drawingComponent.population = new Population(popSize);
+				popViewer.drawingComponent.population.truncate(mrate);
+				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
-				drawingComponent.population = component.population;
+				drawingComponent.population = popViewer.drawingComponent.population;
 				if(drawingComponent.runs >= 100) {
 					run.doClick();
+					run.setText("Restart");
 				}
-				bestFitViewer.drawingComponent.chromosome = component.population.population.get(0);
+				bestFitViewer.drawingComponent.chromosome = popViewer.drawingComponent.population.population.get(0);
 				bestFitViewer.drawingComponent.repaint();
 			}
 		});

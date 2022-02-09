@@ -21,11 +21,13 @@ public class MainApp {
 	public static void main(String[] args) {
 		MainApp mainApp = new MainApp();
 		//BestFitViewer bestFit = new BestFitViewer();
-		PopulationViewer population = new PopulationViewer();
+		//PopulationViewer population = new PopulationViewer();
+		EvolutionViewer evo = new EvolutionViewer();
 		
 		mainApp.runApp();		
 		//bestFit.runApp();
-		population.runApp();
+		//population.runApp();
+		evo.runApp();
 	} // main
 
 }
