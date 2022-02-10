@@ -50,18 +50,6 @@ public class Population {
 		int count = 1;
 		g2.translate(20,20);
 		for(Chromosome chr : population) {
-//			for(int x = 0; x < 10; x++) {
-//				for(int i = 0; i < r; i++) {
-//					int index = 10 * i + x;
-//					if (chr.bits.get(index) == 1) {
-//						g2.setColor(Color.GREEN);
-//					}
-//					else {
-//						g2.setColor(Color.BLACK);
-//					}
-//					g2.fillRect(0 + x*HEIGHT,0 + i * WIDTH, WIDTH, HEIGHT);
-//				}
-//			}
 			int i = 0;
 			int rowCount = 0;
 			g2.translate(-WIDTH, 0);
@@ -102,7 +90,7 @@ public class Population {
 				count++;
 			}
 			Fitness fit = new Fitness(chr);
-			chr.fitness = fit.countsOnes();
+			chr.fitness = fit.countOnes();
 		}
 	}
 	
@@ -152,7 +140,7 @@ public class Population {
 		for(Chromosome chr : population) {
 			chr = chr.mutate(mrate);
 			Fitness fit = new Fitness(chr);
-			chr.fitness = fit.countsOnes();
+			chr.fitness = fit.countOnes();
 		}
 		population = trunSort(population);
 		ArrayList<Integer> test = new ArrayList<Integer>();

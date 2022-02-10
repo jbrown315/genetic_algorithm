@@ -20,7 +20,6 @@ import javax.swing.Timer;
 
 
 public class EvolutionViewer {
-//	public static final Dimension VIEWER_SIZE = new Dimension(765, 345);
 	public static final Dimension VIEWER_SIZE = new Dimension(765, 375);
 	
 	JFrame viewerFrame;
@@ -144,9 +143,8 @@ public class EvolutionViewer {
 		run.addActionListener(new ActionListener() {
 			@Override
 	        public void actionPerformed(ActionEvent e) {
-				if(run.getText().equals("Restart")) {
-					
-					runApp();
+				if(run.getText().equals("Finished!")) {
+					return;
 				}
 				choice = (String) selection.getSelectedItem();
 				if(input.getText().equals("")) {
@@ -216,8 +214,6 @@ public class EvolutionViewer {
 		t = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-//				popViewer.drawingComponent.population = new Population(popSize);
-//				popViewer.drawingComponent.population.r = genLen;
 				popViewer.drawingComponent.population.truncate(mrate);
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
@@ -225,11 +221,9 @@ public class EvolutionViewer {
 				drawingComponent.population = popViewer.drawingComponent.population;
 				if(drawingComponent.runs >= generations) {
 					run.doClick();
-					run.setText("Restart");
+					run.setText("Finished!");
 				}
 				bestFitViewer.drawingComponent.chromosome = popViewer.drawingComponent.population.population.get(0);
-//				System.out.println(popViewer.drawingComponent.population.population.get(0).bits);
-//				System.out.println(bestFitViewer.drawingComponent.chromosome.bits);
 				bestFitViewer.drawingComponent.repaint();
 			}
 		});
