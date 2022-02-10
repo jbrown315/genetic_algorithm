@@ -13,12 +13,14 @@ public class ClickListener implements MouseListener {
 	private boolean border = true;
 	private JLabel label;
 	
+	int extra;
+	
 	int rows;
 	
 	public ClickListener(ChromosomeComponent component, JLabel label) {
 		this.component = component;
 		this.label = label;
-	}
+		}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -33,7 +35,14 @@ public class ClickListener implements MouseListener {
 		x1 = e.getX();
 		y1 = e.getY();
 		rows = this.component.chromosome.rows;
-		if(x1 > 300 || y1 > rows*30) {
+		extra = this.component.chromosome.bits.size() % 10;
+
+		if(x1 < extra*30 && y1 > rows*30 && y1 < rows*30 + 30){
+			border = true;
+			x1 = x1/30;
+			y1 = y1/30;
+		}
+		else if(x1 > 300 || y1 > rows*30) {
 			border = false;
 		}
 		else {

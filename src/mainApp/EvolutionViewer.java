@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,7 +20,8 @@ import javax.swing.Timer;
 
 
 public class EvolutionViewer {
-	public static final Dimension VIEWER_SIZE = new Dimension(765, 345);
+//	public static final Dimension VIEWER_SIZE = new Dimension(765, 345);
+	public static final Dimension VIEWER_SIZE = new Dimension(765, 375);
 	
 	JFrame viewerFrame;
 	Files file;
@@ -28,6 +31,7 @@ public class EvolutionViewer {
 	BestFitViewer bestFitViewer;
 	PopulationViewer popViewer;
 	JButton run;
+	JButton reset;
 	
 	boolean graphed = false;
 	
@@ -65,7 +69,9 @@ public class EvolutionViewer {
 		this.viewerFrame.add(title, BorderLayout.NORTH);
 
 		
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel panel2 = new JPanel();
+		JPanel control = new JPanel(new GridLayout(2,1));
 		JLabel rate = new JLabel("M Rate: _/N");
 		JTextField input = new JTextField(3);
 		JLabel select = new JLabel("Selection");
@@ -82,8 +88,13 @@ public class EvolutionViewer {
 		JLabel elite = new JLabel("Eliteism%");
 		JTextField input5 = new JTextField(3);
 		run = new JButton("Start");
+		reset = new JButton("Reset");
+		
+		
 				
-		this.viewerFrame.add(panel, BorderLayout.SOUTH);
+//		this.viewerFrame.add(panel, BorderLayout.SOUTH);
+		this.viewerFrame.add(control, BorderLayout.SOUTH);
+
 
 		rate.setFont(new Font("Serif", Font.BOLD, 10));
 		select.setFont(new Font("Serif", Font.BOLD, 10));
@@ -99,6 +110,7 @@ public class EvolutionViewer {
 		input4.setFont(new Font("Serif", Font.BOLD, 10));
 		input5.setFont(new Font("Serif", Font.BOLD, 10));
 		run.setFont(new Font("Serif", Font.BOLD, 10));
+		reset.setFont(new Font("Serif", Font.BOLD, 10));
 		title.setFont(new Font("Serif", Font.BOLD, 15));
 
 		input.setText("1");
@@ -120,7 +132,13 @@ public class EvolutionViewer {
 		panel.add(input4);
 		panel.add(elite);
 		panel.add(input5);
-		panel.add(run);
+		
+		panel2.add(run);
+		panel2.add(reset);
+		
+		control.add(panel);
+		control.add(panel2);
+		
 
 		alterPop();
 		run.addActionListener(new ActionListener() {
@@ -174,6 +192,17 @@ public class EvolutionViewer {
 						System.out.println("Invalid Mutation Rate!");
 					}
 				}
+			}
+	    });
+		
+		reset.addActionListener(new ActionListener() {
+			@Override
+	        public void actionPerformed(ActionEvent e) {
+				 EvolutionViewer next = new EvolutionViewer();
+				 viewerFrame.dispose();
+				 popViewer.viewerFrame.dispose();
+				 bestFitViewer.viewerFrame.dispose();
+				 next.runApp();
 			}
 	    });
 				

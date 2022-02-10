@@ -50,18 +50,49 @@ public class Population {
 		int count = 1;
 		g2.translate(20,20);
 		for(Chromosome chr : population) {
-			for(int x = 0; x < 10; x++) {
-				for(int i = 0; i < r; i++) {
-					int index = 10 * i + x;
-					if (chr.bits.get(index) == 1) {
-						g2.setColor(Color.GREEN);
-					}
-					else {
-						g2.setColor(Color.BLACK);
-					}
-					g2.fillRect(0 + x*HEIGHT,0 + i * WIDTH, WIDTH, HEIGHT);
+//			for(int x = 0; x < 10; x++) {
+//				for(int i = 0; i < r; i++) {
+//					int index = 10 * i + x;
+//					if (chr.bits.get(index) == 1) {
+//						g2.setColor(Color.GREEN);
+//					}
+//					else {
+//						g2.setColor(Color.BLACK);
+//					}
+//					g2.fillRect(0 + x*HEIGHT,0 + i * WIDTH, WIDTH, HEIGHT);
+//				}
+//			}
+			int i = 0;
+			int rowCount = 0;
+			g2.translate(-WIDTH, 0);
+			for(int bit : chr.bits) {
+				if (bit == 1) {
+					g2.setColor(Color.GREEN);
+
 				}
+				else {
+					g2.setColor(Color.BLACK);
+
+				}
+				if(i >= 10) {
+					g2.translate(-WIDTH*9, HEIGHT);
+					i=0;
+					rowCount++;
+				}
+				else {
+					g2.translate(WIDTH, 0);
+				}
+				g2.fillRect(0, 0, WIDTH, HEIGHT);
+				i++;
 			}
+			int fac = 0;
+			if(chr.bits.size()%10 == 0) {
+				fac = 9;
+			}
+			else {
+				fac = chr.bits.size()%10 - 1;
+			}
+			g2.translate(-WIDTH*fac,-HEIGHT*rowCount);
 			if(count == 10) {
 				g2.translate(-540,60);
 				count = 1;
