@@ -16,11 +16,15 @@ public class Population {
 	int worstFit = 0;
 	int len = 100;
 	
+	int r = 10;
+	
 	public Population() {
 		if(newPop == null) {
 			population = new ArrayList<Chromosome>();
 			for(int i = 0; i < len; i++) {
-				population.add(new Chromosome());
+				Chromosome temp = new Chromosome(r*10);
+				temp.rows = r;
+				population.add(temp);
 			}
 		}
 		else {
@@ -28,11 +32,13 @@ public class Population {
 		}
 	}
 	
-	public Population(int len) {
+	public Population(int len, int genomes) {
 		if(newPop == null) {
 			population = new ArrayList<Chromosome>();
 			for(int i = 0; i < len; i++) {
-				population.add(new Chromosome());
+				Chromosome temp = new Chromosome(genomes);
+				temp.rows = r;
+				population.add(temp);
 			}
 		}
 		else {
@@ -45,7 +51,7 @@ public class Population {
 		g2.translate(20,20);
 		for(Chromosome chr : population) {
 			for(int x = 0; x < 10; x++) {
-				for(int i = 0; i < 10; i++) {
+				for(int i = 0; i < r; i++) {
 					int index = 10 * i + x;
 					if (chr.bits.get(index) == 1) {
 						g2.setColor(Color.GREEN);
@@ -66,37 +72,22 @@ public class Population {
 			}
 			Fitness fit = new Fitness(chr);
 			chr.fitness = fit.countsOnes();
-			//System.out.println(chr.fitness);
 		}
 	}
 	
 	public void truncate(int mrate) {
-//		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
-//		ArrayList<Integer> fits = new ArrayList<Integer>();
-		Chromosome temp = new Chromosome();
+		Chromosome temp = new Chromosome(r*10);
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
-
-//		for(int i = 0; i < population.size(); i++) {
-//			fits.add(population.get(i).fitness);
-//		}
-//		Collections.sort(fits);
-//		Collections.reverse(fits);
-//		for(int i = 0; i < fits.size(); i++) {
-//			for(int x = 0; x < fits.size(); x++) {
-//				if(population.get(x).fitness == fits.get(i)) {
-//					newpop.add(population.get(x));
-//					population.remove(x);
-//					break;
-//				}
-//			}
-//		}
-//		population = newpop;
 		
 		population = trunSort(population);
 		
 		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+		boolean odd = false;
+		if(population.size()%2 == 1) {
+			odd = true;
+		}
 		for(int i = 0; i < population.size()/2; i++) {
-			temp = new Chromosome();
+			temp = new Chromosome(r*10);
 			temp2 = new ArrayList<Integer>();
 			for(int bit : population.get(i).bits) {
 				temp2.add(bit);
@@ -104,10 +95,11 @@ public class Population {
 			temp.bits = temp2;
 			finalpop.add(temp);
 		}
+
 		population = new ArrayList<Chromosome>();
 		for(int i = 0; i < finalpop.size(); i++) {
 			for(int x = 0; x < 2; x++) {
-				temp = new Chromosome();
+				temp = new Chromosome(r*10);
 				temp2 = new ArrayList<Integer>();
 				for(int bit : finalpop.get(i).bits) {
 					temp2.add(bit);
@@ -116,26 +108,32 @@ public class Population {
 				population.add(temp);
 			}
 		}
+		if(odd) {
+			temp = new Chromosome(r*10);
+			temp2 = new ArrayList<Integer>();
+			for(int bit : finalpop.get(finalpop.size() - 1).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			population.add(temp);
+		}
+		
 		for(Chromosome chr : population) {
 			chr = chr.mutate(mrate);
 			Fitness fit = new Fitness(chr);
 			chr.fitness = fit.countsOnes();
 		}
-		//System.out.println("FIT OF BEST: " + population.get(0).fitness);
 		population = trunSort(population);
 		ArrayList<Integer> test = new ArrayList<Integer>();
 		bestFit = population.get(0).fitness;
+		aveFit = 0;
 		for(Chromosome chr : population) {
 			aveFit += chr.fitness;
 			test.add(chr.fitness);
 		}
 		aveFit = aveFit/population.size();
 		worstFit = population.get(population.size() - 1).fitness;
-//		System.out.println("BEST: " + bestFit);
-//		System.out.println("AVE: " + aveFit);
-//		System.out.println("WORST: " + worstFit);
-//		System.out.println("SIZE: " + population.size());
-//		System.out.println(test);
+
 	}
 	
 	public ArrayList<Chromosome> trunSort(ArrayList<Chromosome> current) {

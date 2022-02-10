@@ -28,6 +28,8 @@ public class EvolutionComponent extends JComponent {
 		g2d.drawLine(50,20,700,20);//TH
 		g2d.drawLine(700,20,700,220);//RV
 		g2d.drawLine(50,220,700,220);//BH
+		g2d.drawString("% Fit", 35, 8);
+		g2d.drawString("# of Gen", 705, 220);
 		for(int i = 0; i < 11; i++) {
 			g2d.drawLine(45, 20 + 20 * i, 55, 20 + 20 * i);
 			g2d.drawString(String.valueOf(100 - 10 * i), 20, 20 + 20 * i);
@@ -36,7 +38,7 @@ public class EvolutionComponent extends JComponent {
 			g2d.drawLine(50 + 65* i, 225, 50 + 65* i, 215);
 			g2d.drawString(String.valueOf(100 - 10 * i), 695 - 65 * i, 240);
 		}
-		int y1 = population.bestFit;
+		int y1 = (int) (((double) (population.bestFit) / (double) (population.population.get(0).bits.size())) * 100);
 		g2d.setColor(Color.GREEN);
 		
 		if(runs >= 0) {
@@ -50,7 +52,7 @@ public class EvolutionComponent extends JComponent {
 			}
 		}
 		
-		int y2 = population.aveFit;
+		int y2 = (int) (((double) (population.aveFit) / (double) (population.population.get(0).bits.size())) * 100);
 		g2d.setColor(Color.ORANGE);
 		
 		if(runs >= 0) {
@@ -64,7 +66,7 @@ public class EvolutionComponent extends JComponent {
 			}
 		}
 		
-		int y3 = population.worstFit;
+		int y3 = (int) (((double) (population.worstFit) / (double) (population.population.get(0).bits.size())) * 100);
 		g2d.setColor(Color.RED);
 		
 		if(runs >= 0) {

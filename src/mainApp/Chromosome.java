@@ -14,12 +14,13 @@ public class Chromosome {
 	int rows = 10;
 	int fitness;
 	
-	public Chromosome() {
+	public Chromosome(int total) {
 		bits = new ArrayList<Integer>();
 		Random random = new Random();
-		for(int x = 0; x < 100; x++) {
+		for(int x = 0; x < total; x++) {
 			bits.add(random.nextInt(2));
 		}
+		rows = total/10;
 	}
 	
 	public void drawOn(Graphics2D g2) {
@@ -48,6 +49,7 @@ public class Chromosome {
 			}
 			
 		}
+
 		
 	}
 	

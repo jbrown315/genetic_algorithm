@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 public class BestFitComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 	
-	Chromosome chromosome = new Chromosome();
+	Chromosome chromosome = new Chromosome(100);
 
 	@Override
 	protected void paintComponent(Graphics graphics) {

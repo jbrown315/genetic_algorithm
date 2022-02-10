@@ -34,6 +34,8 @@ public class EvolutionViewer {
 	String choice;
 	int mrate;
 	int popSize;
+	int generations;
+	int genLen;
 
 	// *********************************************************************
 
@@ -132,13 +134,21 @@ public class EvolutionViewer {
 				if(input.getText().equals("")) {
 					System.out.println("Invalid Mutation Rate!");
 				}
-				else if(input.getText().equals("")) {
+				else if(input2.getText().equals("")) {
 					System.out.println("Invalid Population Size!");
+				}
+				else if(input3.getText().equals("")) {
+					System.out.println("Invalid Number of Generations!");
+				}
+				else if(input4.getText().equals("")) {
+					System.out.println("Invalid Genome Length!");
 				}
 				else {
 					mrate = Integer.valueOf(input.getText());
 					popSize = Integer.valueOf(input2.getText());
-					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 100) {
+					generations = Integer.valueOf(input3.getText());
+					genLen = Integer.valueOf(input4.getText());
+					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 100 && generations >= 0 && generations <= 100 && genLen >= 0 && genLen <= 100) {
 						if(choice.equals("Truncate")) {
 							if(run.getText().equals("Start")) {
 								run.setText("Stop");
@@ -150,7 +160,9 @@ public class EvolutionViewer {
 								t.stop();
 							}
 							else {
-								popViewer.drawingComponent.population = new Population(popSize);
+								popViewer.drawingComponent.population = new Population(popSize, genLen);
+								popViewer.drawingComponent.population.r = genLen / 10;
+								
 								t.start();
 							}
 						}
@@ -176,16 +188,19 @@ public class EvolutionViewer {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 //				popViewer.drawingComponent.population = new Population(popSize);
+//				popViewer.drawingComponent.population.r = genLen;
 				popViewer.drawingComponent.population.truncate(mrate);
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
 				drawingComponent.population = popViewer.drawingComponent.population;
-				if(drawingComponent.runs >= 100) {
+				if(drawingComponent.runs >= generations) {
 					run.doClick();
 					run.setText("Restart");
 				}
 				bestFitViewer.drawingComponent.chromosome = popViewer.drawingComponent.population.population.get(0);
+//				System.out.println(popViewer.drawingComponent.population.population.get(0).bits);
+//				System.out.println(bestFitViewer.drawingComponent.chromosome.bits);
 				bestFitViewer.drawingComponent.repaint();
 			}
 		});

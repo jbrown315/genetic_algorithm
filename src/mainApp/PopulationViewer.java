@@ -29,10 +29,6 @@ public class PopulationViewer {
 		drawingComponent = new PopulationComponent();
 		this.viewerFrame.add(drawingComponent, BorderLayout.CENTER);
 		
-		//EvolutionViewer evo = new EvolutionViewer();
-		//evo.alterPop(drawingComponent);
-		//evo.runApp();
-		
 		this.viewerFrame.setVisible(true);
 	} // runApp
 
