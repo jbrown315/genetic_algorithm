@@ -39,6 +39,8 @@ public class EvolutionViewer {
 	int popSize;
 	int generations;
 	int genLen;
+	int elitism;
+	boolean checked;
 	
 	int method;
 
@@ -114,6 +116,7 @@ public class EvolutionViewer {
 		input2.setText("100");
 		input3.setText("100");
 		input4.setText("100");
+		input5.setText("0");
 
 		panel.add(rate);
 		panel.add(input);
@@ -156,12 +159,17 @@ public class EvolutionViewer {
 				else if(input4.getText().equals("")) {
 					System.out.println("Invalid Genome Length!");
 				}
+				else if(input5.getText().equals("")) {
+					System.out.println("Invalid Elitism!");
+				}
 				else {
 					mrate = Integer.valueOf(input.getText());
 					popSize = Integer.valueOf(input2.getText());
 					generations = Integer.valueOf(input3.getText());
 					genLen = Integer.valueOf(input4.getText());
-					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 100 && generations >= 0 && generations <= 100 && genLen >= 0 && genLen <= 100) {
+					elitism = Integer.valueOf(input5.getText());
+					checked = crossover.isSelected();
+					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 100 && generations >= 0 && generations <= 100 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100) {
 						if(choice.equals("Truncate")) {
 							method = 0;
 						}
@@ -184,12 +192,13 @@ public class EvolutionViewer {
 						else {
 							popViewer.drawingComponent.population = new Population(popSize, genLen);
 							popViewer.drawingComponent.population.r = genLen / 10;
+							popViewer.drawingComponent.population.elite = elitism;
 							t.start();
 						}
 						
 					}
 					else {
-						System.out.println("Invalid Mutation Rate!");
+						System.out.println("Invalid Inputs!");
 					}
 				}
 			}
@@ -228,8 +237,9 @@ public class EvolutionViewer {
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
-				System.out.println(drawingComponent.population.population.size());
-				System.out.println(popViewer.drawingComponent.population.population.size());
+//				System.out.println(drawingComponent.population.population.size());
+//				System.out.println(popViewer.drawingComponent.population.population.size());
+				System.out.println(drawingComponent.runs +": " + popViewer.drawingComponent.population.population.size());
 				drawingComponent.population = popViewer.drawingComponent.population;
 				if(drawingComponent.runs >= generations) {
 					run.doClick();

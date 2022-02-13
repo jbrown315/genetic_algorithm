@@ -22,6 +22,8 @@ public class Population {
 	int len = 100;
 	
 	int r = 10;
+	int elite = 0;
+	boolean cross = false;
 	
 	/**
 	 * Population constructor with zero parameters
@@ -157,11 +159,22 @@ public class Population {
 			temp.bits = temp2;
 			population.add(temp);
 		}
-		
-		for(Chromosome chr : population) {
-			chr = chr.mutate(mrate);
-			Fitness fit = new Fitness(chr);
-			chr.fitness = fit.countOnes();
+		population = sortByFit(population);
+		int x = 0;
+		for(int i = 0; i < population.size(); i++) {
+			Fitness fit = new Fitness(population.get(i));
+			if(x < elite) {
+				population.get(i).fitness = fit.countOnes();
+				x++;
+			}
+			else {
+				if(cross == true) {
+					crossover(population.get(i).bits, population.get(i+1).bits);
+				}
+				population.set(i, population.get(i).mutate(mrate));
+				population.get(i).fitness = fit.countOnes();
+				x++;
+			}
 		}
 		population = sortByFit(population);
 		bestFit = population.get(0).fitness;
@@ -171,6 +184,7 @@ public class Population {
 		}
 		aveFit = aveFit/population.size();
 		worstFit = population.get(population.size() - 1).fitness;
+//		System.out.println(population.get(98).fitness);
 
 	}
 	
@@ -182,38 +196,49 @@ public class Population {
 	public void roulette(int mrate) {
 		Chromosome temp = new Chromosome(r*10);
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
-		System.out.println("SIZE1" + population.size());
+//		System.out.println("SIZE1" + population.size());
 
 		double fitTotal = 0;
 		for(Chromosome chr : population) {
 			fitTotal += chr.fitness;
 		}
-		System.out.println("FITTOTAL: " + fitTotal);
-		int q = 0;
+//		System.out.println("FITTOTAL: " + fitTotal);
+//		int q = 0;
 		if(fitTotal != 0) {
-			for(Chromosome chr : population) {
-				chr.percent = (chr.fitness / fitTotal) * 100.0;	
-//				System.out.println(chr.percent);
-//				System.out.println(q);
-				q++;
-
-			}
-			System.out.println("SIZE2" + population.size());
-			System.out.println("FITTOTAL: " + fitTotal);
-			double update = 100;
-			for(Chromosome chr : population) {
-//				System.out.println(chr.percent);
-				update = update - chr.percent;
-//				System.out.println("UPDATE" + update);
-				chr.percent = update;
-			}
-			System.out.println("TEST");
+//			for(Chromosome chr : population) {
+//				chr.percent = (chr.fitness / fitTotal) * 100.0;	
+////				System.out.println(chr.percent);
+////				System.out.println(q);
+//				q++;
+//
+//			}
+////			System.out.println("SIZE2" + population.size());
+//			System.out.println("FITTOTAL: " + fitTotal);
+//			double update = 100;
+//			for(Chromosome chr : population) {
+////				System.out.println(chr.percent);
+//				update = update - chr.percent;
+////				System.out.println("UPDATE" + update);
+//				chr.percent = update;
+//			}
+//			System.out.println("TEST");
 			Random rand = new Random();
 			ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+			
+			//CREATE TEMP FOR TOTAL FITNESS
+			// comparing totalfit * random double < fitness
+			// AT END HAVE 2 LOOPS and 1 IF ELSE
+			// DONT FORGET TO BREAK AFTER SELECTION
+			// in else fitTotal = fitTotal - chr.fitness
+			double tempTotal = 0;
 			for(int i = 0; i < population.size(); i++) {
-				double pick = rand.nextDouble() * 100;
+				 tempTotal = fitTotal;
+				
+//				double pick = rand.nextDouble() * 100;
 				for(Chromosome chr : population) {
-					if(chr.percent < pick) {
+					double pick = rand.nextDouble() * tempTotal;
+					// fitTotal = fitTotal - chr.fitness
+					if(pick < chr.fitness) {
 						temp = new Chromosome(r*10);
 						temp2 = new ArrayList<Integer>();
 						for(int bit : population.get(i).bits) {
@@ -221,17 +246,36 @@ public class Population {
 						}
 						temp.bits = temp2;
 						finalpop.add(temp);
+						break;
+					}
+					else {
+						tempTotal = tempTotal - chr.fitness;
 					}
 				}
+				
+				
 			}
+			
 			population = new ArrayList<Chromosome>();
 			for(Chromosome chr : finalpop) {
 				population.add(chr);
 			}
-			for(Chromosome chr : population) {
-				chr = chr.mutate(mrate);
-				Fitness fit = new Fitness(chr);
-				chr.fitness = fit.countOnes();
+			population = sortByFit(population);
+			int x = 0;
+			for(int i = 0; i < population.size(); i++) {
+				Fitness fit = new Fitness(population.get(i));
+				if(x < elite) {
+					population.get(i).fitness = fit.countOnes();
+					x++;
+				}
+				else {
+					if(cross == true) {
+						crossover(population.get(i).bits, population.get(i+1).bits);
+					}
+					population.set(i, population.get(i).mutate(mrate));
+					population.get(i).fitness = fit.countOnes();
+					x++;
+				}
 			}
 			population = sortByFit(population);
 			bestFit = population.get(0).fitness;
@@ -243,7 +287,6 @@ public class Population {
 			worstFit = population.get(population.size() - 1).fitness;
 		}
 	}
-	
 	/**
 	 * Helper function to sort the population by fitness
 	 * @param current
@@ -268,4 +311,34 @@ public class Population {
 		}
 		return newpop;
 	}
+	
+	public void crossover(ArrayList<Integer> one, ArrayList<Integer> two) {
+		ArrayList<Integer> p1 = new ArrayList<Integer>();
+		ArrayList<Integer> p2 = new ArrayList<Integer>();
+		ArrayList<Integer> p3 = new ArrayList<Integer>();
+		ArrayList<Integer> p4 = new ArrayList<Integer>();
+		for(int a = 0; a < one.size(); a++) {
+			if(a < one.size()/2) {
+				p1.add(one.get(a));
+			}
+			else {
+				p2.add(one.get(a));
+			}
+		}
+		for(int a = 0; a < two.size(); a++) {
+			if(a < two.size()/2) {
+				p3.add(two.get(a));
+			}
+			else {
+				p4.add(two.get(a));
+			}
+		}
+		one = new ArrayList<Integer>();
+		two = new ArrayList<Integer>();
+		one.addAll(p1);
+		one.addAll(p4);
+		two.addAll(p3);
+		two.addAll(p2);
+	}
+	
 }
