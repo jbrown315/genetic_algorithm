@@ -39,6 +39,8 @@ public class EvolutionViewer {
 	int popSize;
 	int generations;
 	int genLen;
+	
+	int method;
 
 	// *********************************************************************
 
@@ -74,7 +76,7 @@ public class EvolutionViewer {
 		JLabel rate = new JLabel("M Rate: _/N");
 		JTextField input = new JTextField(3);
 		JLabel select = new JLabel("Selection");
-		String[] options = {"Truncate", "Routlette Wheel", "Ranked"};
+		String[] options = {"Truncate", "Roulette Wheel", "Ranked"};
 		JComboBox<String> selection = new JComboBox<String>(options);
 		JLabel cross = new JLabel("Crossover");
 		JCheckBox crossover = new JCheckBox();
@@ -88,12 +90,8 @@ public class EvolutionViewer {
 		JTextField input5 = new JTextField(3);
 		run = new JButton("Start");
 		reset = new JButton("Reset");
-		
-		
 				
-//		this.viewerFrame.add(panel, BorderLayout.SOUTH);
 		this.viewerFrame.add(control, BorderLayout.SOUTH);
-
 
 		rate.setFont(new Font("Serif", Font.BOLD, 10));
 		select.setFont(new Font("Serif", Font.BOLD, 10));
@@ -138,7 +136,6 @@ public class EvolutionViewer {
 		control.add(panel);
 		control.add(panel2);
 		
-
 		alterPop();
 		run.addActionListener(new ActionListener() {
 			@Override
@@ -166,25 +163,30 @@ public class EvolutionViewer {
 					genLen = Integer.valueOf(input4.getText());
 					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 100 && generations >= 0 && generations <= 100 && genLen >= 0 && genLen <= 100) {
 						if(choice.equals("Truncate")) {
-							if(run.getText().equals("Start")) {
-								run.setText("Stop");
-							}
-							else {
-								run.setText("Start");
-							}
-							if(run.getText().equals("Start")) {
-								t.stop();
-							}
-							else {
-								popViewer.drawingComponent.population = new Population(popSize, genLen);
-								popViewer.drawingComponent.population.r = genLen / 10;
-								
-								t.start();
-							}
+							method = 0;
+						}
+						else if(choice.equals("Roulette Wheel")) {
+							method = 1;
 						}
 						else {
+							method = 2;
 							System.out.println("INVALID");
 						}
+						if(run.getText().equals("Start")) {
+							run.setText("Stop");
+						}
+						else {
+							run.setText("Start");
+						}
+						if(run.getText().equals("Start")) {
+							t.stop();
+						}
+						else {
+							popViewer.drawingComponent.population = new Population(popSize, genLen);
+							popViewer.drawingComponent.population.r = genLen / 10;
+							t.start();
+						}
+						
 					}
 					else {
 						System.out.println("Invalid Mutation Rate!");
@@ -214,10 +216,20 @@ public class EvolutionViewer {
 		t = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				popViewer.drawingComponent.population.truncate(mrate);
+				if(method == 0) {
+					popViewer.drawingComponent.population.truncate(mrate);
+				}
+				else if(method == 1) {
+					popViewer.drawingComponent.population.roulette(mrate);
+				}
+				else {
+					System.out.println("???");
+				}
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
+				System.out.println(drawingComponent.population.population.size());
+				System.out.println(popViewer.drawingComponent.population.population.size());
 				drawingComponent.population = popViewer.drawingComponent.population;
 				if(drawingComponent.runs >= generations) {
 					run.doClick();

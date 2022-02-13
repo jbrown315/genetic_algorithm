@@ -3,7 +3,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.util.Random;
+/**
+ * Population Class
+ * @author brownjs
+ *
+ */
 public class Population {
 	private static final int HEIGHT = 5;
 	private static final int WIDTH = 5;
@@ -18,6 +23,9 @@ public class Population {
 	
 	int r = 10;
 	
+	/**
+	 * Population constructor with zero parameters
+	 */
 	public Population() {
 		if(newPop == null) {
 			population = new ArrayList<Chromosome>();
@@ -32,6 +40,11 @@ public class Population {
 		}
 	}
 	
+	/**
+	 * Population Constructor with a variable length and chromosome length
+	 * @param len
+	 * @param genomes
+	 */
 	public Population(int len, int genomes) {
 		if(newPop == null) {
 			population = new ArrayList<Chromosome>();
@@ -45,7 +58,10 @@ public class Population {
 			population = newPop;
 		}
 	}
-	
+	/**
+	 * draws the population onto the provided graphics
+	 * @param g2
+	 */
 	public void drawOn(Graphics2D g2) {
 		int count = 1;
 		g2.translate(20,20);
@@ -94,11 +110,16 @@ public class Population {
 		}
 	}
 	
+	/**
+	 * truncation selection algorithm
+	 * sorts the population by fitness and then drops the bottom half and mutates the top half
+	 * @param mrate
+	 */
 	public void truncate(int mrate) {
 		Chromosome temp = new Chromosome(r*10);
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
 		
-		population = trunSort(population);
+		population = sortByFit(population);
 		
 		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
 		boolean odd = false;
@@ -142,20 +163,93 @@ public class Population {
 			Fitness fit = new Fitness(chr);
 			chr.fitness = fit.countOnes();
 		}
-		population = trunSort(population);
-		ArrayList<Integer> test = new ArrayList<Integer>();
+		population = sortByFit(population);
 		bestFit = population.get(0).fitness;
 		aveFit = 0;
 		for(Chromosome chr : population) {
 			aveFit += chr.fitness;
-			test.add(chr.fitness);
 		}
 		aveFit = aveFit/population.size();
 		worstFit = population.get(population.size() - 1).fitness;
 
 	}
 	
-	public ArrayList<Chromosome> trunSort(ArrayList<Chromosome> current) {
+	/**
+	 * Roulette wheel ranking system
+	 * ranks the chromosome's fitness as a percent of total fitness then randomly selects.
+	 * @param mrate
+	 */
+	public void roulette(int mrate) {
+		Chromosome temp = new Chromosome(r*10);
+		ArrayList<Integer> temp2 = new ArrayList<Integer>();
+		System.out.println("SIZE1" + population.size());
+
+		double fitTotal = 0;
+		for(Chromosome chr : population) {
+			fitTotal += chr.fitness;
+		}
+		System.out.println("FITTOTAL: " + fitTotal);
+		int q = 0;
+		if(fitTotal != 0) {
+			for(Chromosome chr : population) {
+				chr.percent = (chr.fitness / fitTotal) * 100.0;	
+//				System.out.println(chr.percent);
+//				System.out.println(q);
+				q++;
+
+			}
+			System.out.println("SIZE2" + population.size());
+			System.out.println("FITTOTAL: " + fitTotal);
+			double update = 100;
+			for(Chromosome chr : population) {
+//				System.out.println(chr.percent);
+				update = update - chr.percent;
+//				System.out.println("UPDATE" + update);
+				chr.percent = update;
+			}
+			System.out.println("TEST");
+			Random rand = new Random();
+			ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+			for(int i = 0; i < population.size(); i++) {
+				double pick = rand.nextDouble() * 100;
+				for(Chromosome chr : population) {
+					if(chr.percent < pick) {
+						temp = new Chromosome(r*10);
+						temp2 = new ArrayList<Integer>();
+						for(int bit : population.get(i).bits) {
+							temp2.add(bit);
+						}
+						temp.bits = temp2;
+						finalpop.add(temp);
+					}
+				}
+			}
+			population = new ArrayList<Chromosome>();
+			for(Chromosome chr : finalpop) {
+				population.add(chr);
+			}
+			for(Chromosome chr : population) {
+				chr = chr.mutate(mrate);
+				Fitness fit = new Fitness(chr);
+				chr.fitness = fit.countOnes();
+			}
+			population = sortByFit(population);
+			bestFit = population.get(0).fitness;
+			aveFit = 0;
+			for(Chromosome chr : population) {
+				aveFit += chr.fitness;
+			}
+			aveFit = aveFit/population.size();
+			worstFit = population.get(population.size() - 1).fitness;
+		}
+	}
+	
+	/**
+	 * Helper function to sort the population by fitness
+	 * @param current
+	 * @return
+	 */
+	public ArrayList<Chromosome> sortByFit(ArrayList<Chromosome> current) {
 		ArrayList<Chromosome> newpop = new ArrayList<Chromosome>();
 		ArrayList<Integer> fits = new ArrayList<Integer>();
 		for(int i = 0; i < population.size(); i++) {

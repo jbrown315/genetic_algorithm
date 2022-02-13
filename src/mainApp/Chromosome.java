@@ -13,6 +13,7 @@ public class Chromosome {
 	ArrayList<Integer> bits;
 	int rows = 10;
 	int fitness;
+	double percent = 0.0;
 	
 	public Chromosome(int total) {
 		bits = new ArrayList<Integer>();
@@ -24,31 +25,6 @@ public class Chromosome {
 	}
 	
 	public void drawOn(Graphics2D g2) {
-
-//		for(int x = 0; x < 10; x++) {
-//			for(int i = 0; i < rows; i++) {
-//				int index = 10 * i + x;
-//				if (bits.get(index) == 1) {
-//					g2.setColor(Color.GREEN);
-//
-//				}
-//				else {
-//					g2.setColor(Color.BLACK);
-//
-//				}
-//				g2.fillRect(0 + x*HEIGHT,0 + i * WIDTH, WIDTH, HEIGHT);
-//				if (bits.get(index) == 1) {
-//					g2.setColor(Color.BLACK);
-//
-//				}
-//				else {
-//					g2.setColor(Color.GREEN);
-//
-//				}
-//				g2.drawRect(0 + x*HEIGHT,0 + i * WIDTH, WIDTH, HEIGHT);
-//			}
-//			
-//		}
 		
 		int rowCount = 0;
 		int i = 0;
