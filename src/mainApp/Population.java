@@ -184,7 +184,6 @@ public class Population {
 		}
 		aveFit = aveFit/population.size();
 		worstFit = population.get(population.size() - 1).fitness;
-//		System.out.println(population.get(98).fitness);
 
 	}
 	

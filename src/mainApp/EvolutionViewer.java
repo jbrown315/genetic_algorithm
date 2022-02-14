@@ -240,7 +240,6 @@ public class EvolutionViewer {
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
-				System.out.println(drawingComponent.runs +": " + popViewer.drawingComponent.population.population.size());
 				drawingComponent.population = popViewer.drawingComponent.population;
 				if(drawingComponent.runs >= generations) {
 					run.doClick();
