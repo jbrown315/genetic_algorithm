@@ -14,6 +14,7 @@ public class EvolutionComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 	
 	int runs = -1;
+	int gens = 100;
 	
 	Population population = new Population();
 	ArrayList<Integer> bcoords = new ArrayList<Integer>();
@@ -36,13 +37,13 @@ public class EvolutionComponent extends JComponent {
 		}
 		for(int i = 0; i < 11; i++) {
 			g2d.drawLine(50 + 65* i, 225, 50 + 65* i, 215);
-			g2d.drawString(String.valueOf(100 - 10 * i), 695 - 65 * i, 240);
+			g2d.drawString(String.valueOf(gens - gens/10 * i), 695 - 65 * i, 240);
 		}
 		int y1 = (int) (((double) (population.bestFit) / (double) (population.population.get(0).bits.size())) * 100);
 		g2d.setColor(Color.GREEN);
 		
 		if(runs >= 0) {
-			bcoords.add((int) (50+runs*6.5));
+			bcoords.add((int) (50+runs* (6.5 / (gens / 100.0))));
 			bcoords.add(220-y1*2);
 		}
 		if(bcoords.size() > 2) {
@@ -56,7 +57,7 @@ public class EvolutionComponent extends JComponent {
 		g2d.setColor(Color.ORANGE);
 		
 		if(runs >= 0) {
-			acoords.add((int) (50+runs*6.5));
+			acoords.add((int) (50+runs* (6.5 / (gens / 100.0))));
 			acoords.add(220-y2*2);
 		}
 		if(acoords.size() > 2) {
@@ -70,7 +71,7 @@ public class EvolutionComponent extends JComponent {
 		g2d.setColor(Color.RED);
 		
 		if(runs >= 0) {
-			wcoords.add((int) (50+runs*6.5));
+			wcoords.add((int) (50+runs* (6.5 / (gens / 100.0))));
 			wcoords.add(220-y3*2);
 		}
 		if(wcoords.size() > 2) {
