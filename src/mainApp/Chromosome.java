@@ -13,7 +13,7 @@ public class Chromosome {
 	ArrayList<Integer> bits;
 	int rows = 10;
 	int fitness;
-	double percent = 0.0;
+	int rank = 0;
 	
 	public Chromosome(int total) {
 		bits = new ArrayList<Integer>();

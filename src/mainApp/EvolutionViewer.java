@@ -231,17 +231,22 @@ public class EvolutionViewer {
 				else if(method == 1) {
 					popViewer.drawingComponent.population.roulette(mrate);
 				}
+				else if(method == 2) {
+					popViewer.drawingComponent.population.ranked(mrate);
+				}
 				else {
 					System.out.println("???");
 				}
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
-//				System.out.println(drawingComponent.population.population.size());
-//				System.out.println(popViewer.drawingComponent.population.population.size());
 				System.out.println(drawingComponent.runs +": " + popViewer.drawingComponent.population.population.size());
 				drawingComponent.population = popViewer.drawingComponent.population;
 				if(drawingComponent.runs >= generations) {
+					run.doClick();
+					run.setText("Finished!");
+				}
+				else if(popViewer.drawingComponent.population.bestFit == 100) {
 					run.doClick();
 					run.setText("Finished!");
 				}
