@@ -247,7 +247,6 @@ public class Population {
 					population.add(temp);
 				}
 			}
-			
 			if(odd) {
 				temp = new Chromosome(r*10);
 				temp2 = new ArrayList<Integer>();
@@ -256,13 +255,6 @@ public class Population {
 				}
 				temp.bits = temp2;
 				population.add(temp);
-			}
-			
-			//populate population with the 50 chromosomes selected from finalpop
-			
-			population = new ArrayList<Chromosome>();
-			for(Chromosome chr : finalpop) {
-				population.add(chr);
 			}
 			population = sortByFit(population);
 			int x = 0;
@@ -290,6 +282,7 @@ public class Population {
 			aveFit = aveFit/population.size();
 			worstFit = population.get(population.size() - 1).fitness;
 		}
+
 	}
 	
 	public void ranked(int mrate) {
