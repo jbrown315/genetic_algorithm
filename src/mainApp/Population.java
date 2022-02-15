@@ -25,6 +25,8 @@ public class Population {
 	int elite = 0;
 	boolean cross = false;
 	
+	int fitmethod = 0;
+	
 	/**
 	 * Population constructor with zero parameters
 	 */
@@ -108,7 +110,15 @@ public class Population {
 				count++;
 			}
 			Fitness fit = new Fitness(chr);
-			chr.fitness = fit.countOnes();
+			if(fitmethod == 0) {
+				chr.fitness = fit.countOnes();
+			}
+			else if(fitmethod == 1) {
+				chr.fitness = fit.matchSmile();
+			}
+			else {
+				chr.fitness = fit.consecutive();
+			}
 		}
 	}
 	
@@ -164,7 +174,15 @@ public class Population {
 		for(int i = 0; i < population.size(); i++) {
 			Fitness fit = new Fitness(population.get(i));
 			if(x < elite) {
-				population.get(i).fitness = fit.countOnes();
+				if(fitmethod == 0) {
+					population.get(i).fitness = fit.countOnes();
+				}
+				else if(fitmethod == 1) {
+					population.get(i).fitness = fit.matchSmile();
+				}
+				else {
+					population.get(i).fitness = fit.consecutive();
+				}
 				x++;
 			}
 			else {
@@ -172,7 +190,15 @@ public class Population {
 					crossover(population.get(i).bits, population.get(i+1).bits);
 				}
 				population.set(i, population.get(i).mutate(mrate));
-				population.get(i).fitness = fit.countOnes();
+				if(fitmethod == 0) {
+					population.get(i).fitness = fit.countOnes();
+				}
+				else if(fitmethod == 1) {
+					population.get(i).fitness = fit.matchSmile();
+				}
+				else {
+					population.get(i).fitness = fit.consecutive();
+				}
 				x++;
 			}
 		}
@@ -200,7 +226,15 @@ public class Population {
 		double fitTotal = 0;
 		for(Chromosome chr : population) {
 			Fitness fit = new Fitness(chr);
-			chr.fitness = fit.countOnes();
+			if(fitmethod == 0) {
+				chr.fitness = fit.countOnes();
+			}
+			else if(fitmethod == 1) {
+				chr.fitness = fit.matchSmile();
+			}
+			else {
+				chr.fitness = fit.consecutive();
+			}
 			fitTotal += chr.fitness;
 		}
 			Random rand = new Random();
@@ -258,7 +292,15 @@ public class Population {
 			for(int i = 0; i < population.size(); i++) {
 				Fitness fit = new Fitness(population.get(i));
 				if(x < elite) {
-					population.get(i).fitness = fit.countOnes();
+					if(fitmethod == 0) {
+						population.get(i).fitness = fit.countOnes();
+					}
+					else if(fitmethod == 1) {
+						population.get(i).fitness = fit.matchSmile();
+					}
+					else {
+						population.get(i).fitness = fit.consecutive();
+					}
 					x++;
 				}
 				else {
@@ -266,7 +308,15 @@ public class Population {
 						crossover(population.get(i).bits, population.get(i+1).bits);
 					}
 					population.set(i, population.get(i).mutate(mrate));
-					population.get(i).fitness = fit.countOnes();
+					if(fitmethod == 0) {
+						population.get(i).fitness = fit.countOnes();
+					}
+					else if(fitmethod == 1) {
+						population.get(i).fitness = fit.matchSmile();
+					}
+					else {
+						population.get(i).fitness = fit.consecutive();
+					}
 					x++;
 				}
 			}
@@ -280,16 +330,11 @@ public class Population {
 			worstFit = population.get(population.size() - 1).fitness;
 		}
 
-//	}
 	
 	public void ranked(int mrate) {
 		Chromosome temp = new Chromosome(r*10);
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
 
-		double fitTotal = 0;
-		for(Chromosome chr : population) {
-			fitTotal += chr.fitness;
-		}
 		Random rand = new Random();
 		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
 
@@ -349,7 +394,15 @@ public class Population {
 		for(int i = 0; i < population.size(); i++) {
 			Fitness fit = new Fitness(population.get(i));
 			if(x < elite) {
-				population.get(i).fitness = fit.countOnes();
+				if(fitmethod == 0) {
+					population.get(i).fitness = fit.countOnes();
+				}
+				else if(fitmethod == 1) {
+					population.get(i).fitness = fit.matchSmile();
+				}
+				else {
+					population.get(i).fitness = fit.consecutive();
+				}
 				x++;
 			}
 			else {
@@ -357,7 +410,15 @@ public class Population {
 					crossover(population.get(i).bits, population.get(i+1).bits);
 				}
 				population.set(i, population.get(i).mutate(mrate));
-				population.get(i).fitness = fit.countOnes();
+				if(fitmethod == 0) {
+					population.get(i).fitness = fit.countOnes();
+				}
+				else if(fitmethod == 1) {
+					population.get(i).fitness = fit.matchSmile();
+				}
+				else {
+					population.get(i).fitness = fit.consecutive();
+				}
 				x++;
 			}
 		}

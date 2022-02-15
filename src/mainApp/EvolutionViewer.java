@@ -35,6 +35,7 @@ public class EvolutionViewer {
 	boolean graphed = false;
 	
 	String choice;
+	String fitChoice;
 	int mrate;
 	int popSize;
 	int generations;
@@ -90,9 +91,12 @@ public class EvolutionViewer {
 		JTextField input4 = new JTextField(3);
 		JLabel elite = new JLabel("Eliteism%");
 		JTextField input5 = new JTextField(3);
+		JLabel fitSel = new JLabel("Fit Method");
+		String[] fitOptions = {"All Ones", "Smile", "Consecutive Ones"};
+		JComboBox<String> fitType = new JComboBox<String>(fitOptions);
 		run = new JButton("Start");
 		reset = new JButton("Reset");
-				
+			
 		this.viewerFrame.add(control, BorderLayout.SOUTH);
 
 		rate.setFont(new Font("Serif", Font.BOLD, 10));
@@ -111,6 +115,8 @@ public class EvolutionViewer {
 		run.setFont(new Font("Serif", Font.BOLD, 10));
 		reset.setFont(new Font("Serif", Font.BOLD, 10));
 		title.setFont(new Font("Serif", Font.BOLD, 15));
+		fitType.setFont(new Font("Serif", Font.BOLD, 10));
+		fitSel.setFont(new Font("Serif", Font.BOLD, 10));
 
 		input.setText("1");
 		input2.setText("100");
@@ -133,6 +139,8 @@ public class EvolutionViewer {
 		panel.add(elite);
 		panel.add(input5);
 		
+		panel2.add(fitSel);
+		panel2.add(fitType);
 		panel2.add(run);
 		panel2.add(reset);
 		
@@ -147,6 +155,7 @@ public class EvolutionViewer {
 					return;
 				}
 				choice = (String) selection.getSelectedItem();
+				fitChoice = (String) fitType.getSelectedItem();
 				if(input.getText().equals("")) {
 					System.out.println("Invalid Mutation Rate!");
 				}
@@ -192,6 +201,15 @@ public class EvolutionViewer {
 							popViewer.drawingComponent.population = new Population(popSize, genLen);
 							popViewer.drawingComponent.population.r = genLen / 10;
 							popViewer.drawingComponent.population.elite = elitism;
+							if(fitChoice.equals("All Ones")) {
+								popViewer.drawingComponent.population.fitmethod = 0;
+							}
+							else if(fitChoice.equals("Smile")) {
+								popViewer.drawingComponent.population.fitmethod = 1;
+							}
+							else {
+								popViewer.drawingComponent.population.fitmethod = 2;
+							}
 							drawingComponent.gens = generations;
 							t.start();
 						}
