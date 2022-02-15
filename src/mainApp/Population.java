@@ -10,8 +10,8 @@ import java.util.Random;
  *
  */
 public class Population {
-	private static final int HEIGHT = 5;
-	private static final int WIDTH = 5;
+	private static int HEIGHT = 5;
+	private static int WIDTH = 5;
 	
 	ArrayList<Chromosome> population;
 	ArrayList<Chromosome> newPop;
@@ -69,6 +69,9 @@ public class Population {
 	public void drawOn(Graphics2D g2) {
 		int count = 1;
 		g2.translate(20,20);
+//		int numInRow = (int) Math.sqrt(population.size());
+//		int numOfRows = (population.size() / numInRow) + 1;
+//		int lastRowCount = population.size() % numInRow;
 		for(Chromosome chr : population) {
 			int i = 0;
 			int rowCount = 0;
