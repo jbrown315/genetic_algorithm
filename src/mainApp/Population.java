@@ -10,8 +10,8 @@ import java.util.Random;
  *
  */
 public class Population {
-	private static int HEIGHT = 5;
-	private static int WIDTH = 5;
+	int height = 5;
+	int width = 5;
 	
 	ArrayList<Chromosome> population;
 	ArrayList<Chromosome> newPop;
@@ -26,6 +26,10 @@ public class Population {
 	boolean cross = false;
 	
 	int fitmethod = 0;
+	
+	double numInRow;
+	double numOfRows;
+	double lastRowCount;
 	
 	/**
 	 * Population constructor with zero parameters
@@ -69,13 +73,24 @@ public class Population {
 	public void drawOn(Graphics2D g2) {
 		int count = 1;
 		g2.translate(20,20);
-//		int numInRow = (int) Math.sqrt(population.size());
-//		int numOfRows = (population.size() / numInRow) + 1;
-//		int lastRowCount = population.size() % numInRow;
+		numInRow = Math.sqrt(population.size());
+		numOfRows = (population.size() / numInRow) + 1;
+		lastRowCount = population.size() % numInRow;
+		if(lastRowCount == 0) {
+			numOfRows -= 1;
+		}
+		width = (int) (50/ (numInRow + 1));
+		height = (int) (50/ (numInRow + 1));
+		if(population.size() == 100) {
+			width = 5;
+			height = 5;
+		}
+		
+		int numInRowInt = (int) numInRow;
 		for(Chromosome chr : population) {
 			int i = 0;
 			int rowCount = 0;
-			g2.translate(-WIDTH, 0);
+			g2.translate(-width, 0);
 			for(int bit : chr.bits) {
 				if (bit == 1) {
 					g2.setColor(Color.GREEN);
@@ -86,14 +101,14 @@ public class Population {
 
 				}
 				if(i >= 10) {
-					g2.translate(-WIDTH*9, HEIGHT);
+					g2.translate(-width*9, height);
 					i=0;
 					rowCount++;
 				}
 				else {
-					g2.translate(WIDTH, 0);
+					g2.translate(width, 0);
 				}
-				g2.fillRect(0, 0, WIDTH, HEIGHT);
+				g2.fillRect(0, 0, width, height);
 				i++;
 			}
 			int fac = 0;
@@ -103,13 +118,13 @@ public class Population {
 			else {
 				fac = chr.bits.size()%10 - 1;
 			}
-			g2.translate(-WIDTH*fac,-HEIGHT*rowCount);
-			if(count == 10) {
-				g2.translate(-540,60);
+			g2.translate(-width*fac,-height*rowCount);
+			if(count == numInRowInt) {
+				g2.translate(-width*12*(numInRowInt-1),height*12);
 				count = 1;
 			}
 			else {
-				g2.translate(60,0);
+				g2.translate(width*(12),0);
 				count++;
 			}
 			Fitness fit = new Fitness(chr);

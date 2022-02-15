@@ -178,7 +178,7 @@ public class EvolutionViewer {
 					genLen = Integer.valueOf(input4.getText());
 					elitism = Integer.valueOf(input5.getText());
 					checked = crossover.isSelected();
-					if(mrate >= 0 && mrate <= 100 && popSize >= 0 && popSize <= 500 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100) {
+					if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100) {
 						if(choice.equals("Truncate")) {
 							method = 0;
 						}
@@ -258,6 +258,17 @@ public class EvolutionViewer {
 				else {
 					System.out.println("???");
 				}
+				int temp = 0;
+				if(popViewer.drawingComponent.population.lastRowCount == 0) {
+					temp = 1;
+				}
+				else if(popViewer.drawingComponent.population.lastRowCount > popViewer.drawingComponent.population.numInRow) {
+					temp = 3;
+				}
+				else {
+					temp = 2;
+				}
+				popViewer.viewerFrame.setSize(new Dimension(popViewer.drawingComponent.population.width *12* ((int) (popViewer.drawingComponent.population.numInRow)) + 50, popViewer.drawingComponent.population.height * 12 * ((int) (popViewer.drawingComponent.population.numOfRows) + temp) + 50));
 				popViewer.drawingComponent.repaint();
 				drawingComponent.repaint();
 				drawingComponent.runs++;
