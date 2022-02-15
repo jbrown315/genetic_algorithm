@@ -208,10 +208,16 @@ public class Population {
 			// AT END HAVE 2 LOOPS and 1 IF ELSE
 			// DONT FORGET TO BREAK AFTER SELECTION
 			// in else fitTotal = fitTotal - chr.fitness
+			
+			boolean odd = false;
+			if(population.size()%2 == 1) {
+				odd = true;
+			}
+			
 			double tempTotal = 0;
-			for(int i = 0; i < population.size(); i++) {
-				 tempTotal = fitTotal;
-				
+			
+			for(int i = 0; i < population.size()/2; i++) {
+				tempTotal = fitTotal;
 				for(Chromosome chr : population) {
 					double pick = rand.nextDouble() * tempTotal;
 					if(pick < chr.fitness) {
@@ -228,9 +234,31 @@ public class Population {
 						tempTotal = tempTotal - chr.fitness;
 					}
 				}
-				
-				
 			}
+			population = new ArrayList<Chromosome>();
+			for(int i = 0; i < finalpop.size(); i++) {
+				for(int x = 0; x < 2; x++) {
+					temp = new Chromosome(r*10);
+					temp2 = new ArrayList<Integer>();
+					for(int bit : finalpop.get(i).bits) {
+						temp2.add(bit);
+					}
+					temp.bits = temp2;
+					population.add(temp);
+				}
+			}
+			
+			if(odd) {
+				temp = new Chromosome(r*10);
+				temp2 = new ArrayList<Integer>();
+				for(int bit : finalpop.get(finalpop.size() - 1).bits) {
+					temp2.add(bit);
+				}
+				temp.bits = temp2;
+				population.add(temp);
+			}
+			
+			//populate population with the 50 chromosomes selected from finalpop
 			
 			population = new ArrayList<Chromosome>();
 			for(Chromosome chr : finalpop) {
