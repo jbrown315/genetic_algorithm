@@ -198,19 +198,22 @@ public class EvolutionViewer {
 							t.stop();
 						}
 						else {
-							popViewer.drawingComponent.population = new Population(popSize, genLen);
-							popViewer.drawingComponent.population.r = genLen / 10;
-							popViewer.drawingComponent.population.elite = elitism;
-							if(fitChoice.equals("All Ones")) {
-								popViewer.drawingComponent.population.fitmethod = 0;
+							if(drawingComponent.runs == 0) {
+								popViewer.drawingComponent.population = new Population(popSize, genLen);
+								popViewer.drawingComponent.population.r = genLen / 10;
+								popViewer.drawingComponent.population.elite = elitism;
+								if(fitChoice.equals("All Ones")) {
+									popViewer.drawingComponent.population.fitmethod = 0;
+								}
+								else if(fitChoice.equals("Smile")) {
+									popViewer.drawingComponent.population.fitmethod = 1;
+								}
+								else {
+									popViewer.drawingComponent.population.fitmethod = 2;
+								}
+								drawingComponent.gens = generations;
 							}
-							else if(fitChoice.equals("Smile")) {
-								popViewer.drawingComponent.population.fitmethod = 1;
-							}
-							else {
-								popViewer.drawingComponent.population.fitmethod = 2;
-							}
-							drawingComponent.gens = generations;
+							
 							t.start();
 						}
 						

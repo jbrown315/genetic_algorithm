@@ -40,9 +40,9 @@ public class EvolutionComponent extends JComponent {
 		g2d.fillRect(600, 160, 12, 12);
 		
 		g2d.setColor(Color.BLACK);
-		g2d.drawString("Best Fit", 620, 130);
-		g2d.drawString("Ave Fit", 620, 150);
-		g2d.drawString("Worst Fit", 620, 170);
+		g2d.drawString("Best Fit: " + population.bestFit, 620, 130);
+		g2d.drawString("Ave Fit: " + population.aveFit, 620, 150);
+		g2d.drawString("Worst Fit: " + population.worstFit, 620, 170);
 		
 		for(int i = 0; i < 11; i++) {
 			g2d.drawLine(45, 20 + 20 * i, 55, 20 + 20 * i);
