@@ -31,6 +31,19 @@ public class EvolutionComponent extends JComponent {
 		g2d.drawLine(50,220,700,220);//BH
 		g2d.drawString("% Fit", 35, 8);
 		g2d.drawString("# of Gen", 705, 220);
+		
+		g2d.setColor(Color.GREEN);
+		g2d.fillRect(600, 120, 12, 12);
+		g2d.setColor(Color.ORANGE);
+		g2d.fillRect(600, 140, 12, 12);
+		g2d.setColor(Color.RED);
+		g2d.fillRect(600, 160, 12, 12);
+		
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("Best Fit", 620, 130);
+		g2d.drawString("Ave Fit", 620, 150);
+		g2d.drawString("Worst Fit", 620, 170);
+		
 		for(int i = 0; i < 11; i++) {
 			g2d.drawLine(45, 20 + 20 * i, 55, 20 + 20 * i);
 			g2d.drawString(String.valueOf(100 - 10 * i), 20, 20 + 20 * i);
