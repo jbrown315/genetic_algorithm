@@ -178,7 +178,6 @@ public class EvolutionViewer {
 						}
 						else {
 							method = 2;
-							System.out.println("INVALID");
 						}
 						if(run.getText().equals("Start")) {
 							run.setText("Stop");

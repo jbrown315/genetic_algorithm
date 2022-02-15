@@ -193,21 +193,18 @@ public class Population {
 	 * @param mrate
 	 */
 	public void roulette(int mrate) {
+		
 		Chromosome temp = new Chromosome(r*10);
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
 
 		double fitTotal = 0;
 		for(Chromosome chr : population) {
+			Fitness fit = new Fitness(chr);
+			chr.fitness = fit.countOnes();
 			fitTotal += chr.fitness;
 		}
-		if(fitTotal != 0) {
 			Random rand = new Random();
 			ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
-			//CREATE TEMP FOR TOTAL FITNESS
-			// comparing totalfit * random double < fitness
-			// AT END HAVE 2 LOOPS and 1 IF ELSE
-			// DONT FORGET TO BREAK AFTER SELECTION
-			// in else fitTotal = fitTotal - chr.fitness
 			
 			boolean odd = false;
 			if(population.size()%2 == 1) {
@@ -283,7 +280,7 @@ public class Population {
 			worstFit = population.get(population.size() - 1).fitness;
 		}
 
-	}
+//	}
 	
 	public void ranked(int mrate) {
 		Chromosome temp = new Chromosome(r*10);
@@ -293,75 +290,85 @@ public class Population {
 		for(Chromosome chr : population) {
 			fitTotal += chr.fitness;
 		}
-		if(fitTotal != 0) {
-			Random rand = new Random();
-			ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
-			//CREATE TEMP FOR TOTAL FITNESS
-			// comparing totalfit * random double < fitness
-			// AT END HAVE 2 LOOPS and 1 IF ELSE
-			// DONT FORGET TO BREAK AFTER SELECTION
-			// in else fitTotal = fitTotal - chr.fitness
-			
-			population = sortByFit(population);
-			int p = population.size();
+		Random rand = new Random();
+		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+
+		population = sortByFit(population);
+		int p = population.size();
+		for(Chromosome chr : population) {
+			chr.rank = p;
+			p--;
+		}
+		boolean odd = false;
+		if(population.size()%2 == 1) {
+			odd = true;
+		}
+		
+		for(int i = 0; i < population.size()/2; i++) {
+			int pick = rand.nextInt(1, population.size() - 1);
 			for(Chromosome chr : population) {
-				chr.rank = p;
-				p--;
-			}
-			
-			double tempTotal = 0;
-			for(int i = 0; i < population.size(); i++) {
-				 tempTotal = fitTotal;
-				for(Chromosome chr : population) {
-					double pick = rand.nextDouble() * tempTotal;
-					if(pick < chr.fitness) {
-						temp = new Chromosome(r*10);
-						temp2 = new ArrayList<Integer>();
-						for(int bit : population.get(i).bits) {
-							temp2.add(bit);
-						}
-						temp.bits = temp2;
-						finalpop.add(temp);
-						break;
-					}
-					else {
-						tempTotal = tempTotal - chr.fitness;
-					}
-				}
 				
 				
-			}
-			
-			population = new ArrayList<Chromosome>();
-			for(Chromosome chr : finalpop) {
-				population.add(chr);
-			}
-			population = sortByFit(population);
-			int x = 0;
-			for(int i = 0; i < population.size(); i++) {
-				Fitness fit = new Fitness(population.get(i));
-				if(x < elite) {
-					population.get(i).fitness = fit.countOnes();
-					x++;
+				if(pick == chr.rank) {
+					temp = new Chromosome(r*10);
+					temp2 = new ArrayList<Integer>();
+					for(int bit : population.get(i).bits) {
+						temp2.add(bit);
+					}
+					temp.bits = temp2;
+					finalpop.add(temp);
+					break;
 				}
 				else {
-					if(cross == true) {
-						crossover(population.get(i).bits, population.get(i+1).bits);
-					}
-					population.set(i, population.get(i).mutate(mrate));
-					population.get(i).fitness = fit.countOnes();
-					x++;
 				}
 			}
-			population = sortByFit(population);
-			bestFit = population.get(0).fitness;
-			aveFit = 0;
-			for(Chromosome chr : population) {
-				aveFit += chr.fitness;
-			}
-			aveFit = aveFit/population.size();
-			worstFit = population.get(population.size() - 1).fitness;
 		}
+		population = new ArrayList<Chromosome>();
+		for(int i = 0; i < finalpop.size(); i++) {
+			for(int x = 0; x < 2; x++) {
+				temp = new Chromosome(r*10);
+				temp2 = new ArrayList<Integer>();
+				for(int bit : finalpop.get(i).bits) {
+					temp2.add(bit);
+				}
+				temp.bits = temp2;
+				population.add(temp);
+			}
+		}
+		if(odd) {
+			temp = new Chromosome(r*10);
+			temp2 = new ArrayList<Integer>();
+			for(int bit : finalpop.get(finalpop.size() - 1).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			population.add(temp);
+		}
+		population = sortByFit(population);
+		int x = 0;
+		for(int i = 0; i < population.size(); i++) {
+			Fitness fit = new Fitness(population.get(i));
+			if(x < elite) {
+				population.get(i).fitness = fit.countOnes();
+				x++;
+			}
+			else {
+				if(cross == true) {
+					crossover(population.get(i).bits, population.get(i+1).bits);
+				}
+				population.set(i, population.get(i).mutate(mrate));
+				population.get(i).fitness = fit.countOnes();
+				x++;
+			}
+		}
+		population = sortByFit(population);
+		bestFit = population.get(0).fitness;
+		aveFit = 0;
+		for(Chromosome chr : population) {
+			aveFit += chr.fitness;
+		}
+		aveFit = aveFit/population.size();
+		worstFit = population.get(population.size() - 1).fitness;
 	}
 	
 	
