@@ -42,7 +42,7 @@ public class EvolutionViewer {
 	int genLen;
 	int elitism;
 	boolean checked;
-	boolean terminateStatus;
+	int terminateStatus;
 	
 	int method;
 
@@ -99,7 +99,7 @@ public class EvolutionViewer {
 		reset = new JButton("Reset");
 		
 		JLabel term = new JLabel("Terminate?");
-		JCheckBox terminate = new JCheckBox();
+		JTextField terminate = new JTextField(3);
 		
 		this.viewerFrame.add(control, BorderLayout.SOUTH);
 
@@ -179,6 +179,9 @@ public class EvolutionViewer {
 				else if(input5.getText().equals("")) {
 					System.out.println("Invalid Elitism!");
 				}
+				else if(terminate.getText().equals("")) {
+					System.out.println("Invalid Elitism!");
+				}
 				else {
 					mrate = Integer.valueOf(input.getText());
 					popSize = Integer.valueOf(input2.getText());
@@ -186,8 +189,8 @@ public class EvolutionViewer {
 					genLen = Integer.valueOf(input4.getText());
 					elitism = Integer.valueOf(input5.getText());
 					checked = crossover.isSelected();
-					terminateStatus = terminate.isSelected();
-					if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100) {
+					terminateStatus = Integer.valueOf(terminate.getText());
+					if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100 && terminateStatus  >= 0 && terminateStatus <= 100) {
 						if(choice.equals("Truncate")) {
 							method = 0;
 						}
@@ -286,7 +289,7 @@ public class EvolutionViewer {
 					run.doClick();
 					run.setText("Finished!");
 				}
-				else if(popViewer.drawingComponent.population.bestFit == 100 && terminateStatus) {
+				else if(popViewer.drawingComponent.population.bestFit == terminateStatus) {
 					run.doClick();
 					run.setText("Finished!");
 				}
