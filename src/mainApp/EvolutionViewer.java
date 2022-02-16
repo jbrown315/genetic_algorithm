@@ -42,6 +42,7 @@ public class EvolutionViewer {
 	int genLen;
 	int elitism;
 	boolean checked;
+	boolean terminateStatus;
 	
 	int method;
 
@@ -96,7 +97,10 @@ public class EvolutionViewer {
 		JComboBox<String> fitType = new JComboBox<String>(fitOptions);
 		run = new JButton("Start");
 		reset = new JButton("Reset");
-			
+		
+		JLabel term = new JLabel("Terminate?");
+		JCheckBox terminate = new JCheckBox();
+		
 		this.viewerFrame.add(control, BorderLayout.SOUTH);
 
 		rate.setFont(new Font("Serif", Font.BOLD, 10));
@@ -117,6 +121,8 @@ public class EvolutionViewer {
 		title.setFont(new Font("Serif", Font.BOLD, 15));
 		fitType.setFont(new Font("Serif", Font.BOLD, 10));
 		fitSel.setFont(new Font("Serif", Font.BOLD, 10));
+		term.setFont(new Font("Serif", Font.BOLD, 10));
+		terminate.setFont(new Font("Serif", Font.BOLD, 10));
 
 		input.setText("1");
 		input2.setText("100");
@@ -139,6 +145,8 @@ public class EvolutionViewer {
 		panel.add(elite);
 		panel.add(input5);
 		
+		panel2.add(term);
+		panel2.add(terminate);
 		panel2.add(fitSel);
 		panel2.add(fitType);
 		panel2.add(run);
@@ -178,6 +186,7 @@ public class EvolutionViewer {
 					genLen = Integer.valueOf(input4.getText());
 					elitism = Integer.valueOf(input5.getText());
 					checked = crossover.isSelected();
+					terminateStatus = terminate.isSelected();
 					if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100) {
 						if(choice.equals("Truncate")) {
 							method = 0;
@@ -277,7 +286,7 @@ public class EvolutionViewer {
 					run.doClick();
 					run.setText("Finished!");
 				}
-				else if(popViewer.drawingComponent.population.bestFit == 100) {
+				else if(popViewer.drawingComponent.population.bestFit == 100 && terminateStatus) {
 					run.doClick();
 					run.setText("Finished!");
 				}
