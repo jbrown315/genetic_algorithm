@@ -20,6 +20,7 @@ public class EvolutionComponent extends JComponent {
 	ArrayList<Integer> bcoords = new ArrayList<Integer>();
 	ArrayList<Integer> acoords = new ArrayList<Integer>();
 	ArrayList<Integer> wcoords = new ArrayList<Integer>();
+	ArrayList<Integer> ucoords = new ArrayList<Integer>();
 
 	@Override
 	protected void paintComponent(Graphics graphics) {
@@ -38,11 +39,14 @@ public class EvolutionComponent extends JComponent {
 		g2d.fillRect(600, 140, 12, 12);
 		g2d.setColor(Color.RED);
 		g2d.fillRect(600, 160, 12, 12);
+		g2d.setColor(Color.YELLOW);
+		g2d.fillRect(600, 180, 12, 12);
 		
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("Best Fit: " + population.bestFit, 620, 130);
 		g2d.drawString("Ave Fit: " + population.aveFit, 620, 150);
 		g2d.drawString("Worst Fit: " + population.worstFit, 620, 170);
+		g2d.drawString("# of Unique: " + population.unique, 620, 190);
 		
 		for(int i = 0; i < 11; i++) {
 			g2d.drawLine(45, 20 + 20 * i, 55, 20 + 20 * i);
@@ -91,6 +95,20 @@ public class EvolutionComponent extends JComponent {
 			for(int i = 0; i < wcoords.size()-2; i+=2) {
 				g2d.setStroke(new BasicStroke(3));
                 g2d.draw(new Line2D.Float(wcoords.get(0 + i), wcoords.get(1+i), wcoords.get(2+i), wcoords.get(3+i)));
+			}
+		}
+		
+		int y4 = (int) (((double) (population.unique) / (double) (population.population.get(0).bits.size())) * 100);
+		g2d.setColor(Color.YELLOW);
+		
+		if(runs >= 0) {
+			ucoords.add((int) (50+runs* (6.5 / (gens / 100.0))));
+			ucoords.add(220-y4*2);
+		}
+		if(ucoords.size() > 2) {
+			for(int i = 0; i < ucoords.size()-2; i+=2) {
+				g2d.setStroke(new BasicStroke(3));
+                g2d.draw(new Line2D.Float(ucoords.get(0 + i), ucoords.get(1+i), ucoords.get(2+i), ucoords.get(3+i)));
 			}
 		}
 

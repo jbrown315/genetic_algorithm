@@ -31,6 +31,8 @@ public class Population {
 	double numOfRows;
 	double lastRowCount;
 	
+	int unique;
+	
 	/**
 	 * Population constructor with zero parameters
 	 */
@@ -221,6 +223,7 @@ public class Population {
 			}
 		}
 		population = sortByFit(population);
+		unique = unique(population);
 		bestFit = population.get(0).fitness;
 		aveFit = 0;
 		for(Chromosome chr : population) {
@@ -339,6 +342,7 @@ public class Population {
 				}
 			}
 			population = sortByFit(population);
+			unique = unique(population);
 			bestFit = population.get(0).fitness;
 			aveFit = 0;
 			for(Chromosome chr : population) {
@@ -441,6 +445,7 @@ public class Population {
 			}
 		}
 		population = sortByFit(population);
+		unique = unique(population);
 		bestFit = population.get(0).fitness;
 		aveFit = 0;
 		for(Chromosome chr : population) {
@@ -503,6 +508,18 @@ public class Population {
 		one.addAll(p4);
 		two.addAll(p3);
 		two.addAll(p2);
+	}
+	
+	public int unique(ArrayList<Chromosome> pop) {
+		int count = 0;
+		for (int i = 0; i < pop.size() - 1; i++) {
+			if(pop.get(i).fitness == pop.get(i+1).fitness) {
+				if(pop.get(i).bits.equals(pop.get(i+1).bits)) {
+					count++;
+				}
+			}
+		}
+		return pop.size() - count;
 	}
 	
 }
