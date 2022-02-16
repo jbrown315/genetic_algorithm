@@ -71,7 +71,7 @@ public class Chromosome {
 	public Chromosome mutate(int num) {
 		Random rand = new Random();
 		for(int i = 0; i < bits.size(); i++) {
-			if(num > rand.nextInt(100)) {
+			if(num > rand.nextInt(bits.size())) {
 				if(bits.get(i) == 1) {
 					bits.set(i, 0);
 				}
@@ -86,7 +86,7 @@ public class Chromosome {
 	public Chromosome mutate(int num, JLabel name) {
 		Random rand = new Random();
 		for(int i = 0; i < bits.size(); i++) {
-			if(num > rand.nextInt(100)) {
+			if(num > rand.nextInt(bits.size())) {
 				if(name.getText().charAt(name.getText().length() - 1) != ')') {
 					name.setText(name.getText() + " (mutated)");
 				}
