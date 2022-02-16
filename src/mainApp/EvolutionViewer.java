@@ -129,6 +129,7 @@ public class EvolutionViewer {
 		input3.setText("100");
 		input4.setText("100");
 		input5.setText("0");
+		terminate.setText("100");
 
 		panel.add(rate);
 		panel.add(input);
