@@ -11,7 +11,6 @@ public class PopulationViewer {
 	public static final Dimension VIEWER_SIZE = new Dimension(650, 700);
 	
 	JFrame viewerFrame;
-	Files file;
 	PopulationComponent drawingComponent;
 
 	// *********************************************************************

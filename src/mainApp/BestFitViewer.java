@@ -8,7 +8,6 @@ public class BestFitViewer {
 	public static final Dimension VIEWER_SIZE = new Dimension(312, 335);
 	
 	JFrame viewerFrame;
-	Files file;
 	BestFitComponent drawingComponent;
 
 	// *********************************************************************

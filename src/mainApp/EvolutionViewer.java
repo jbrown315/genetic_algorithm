@@ -23,7 +23,6 @@ public class EvolutionViewer {
 	public static final Dimension VIEWER_SIZE = new Dimension(765, 375);
 	
 	JFrame viewerFrame;
-	Files file;
 	Timer t;
 	int iterations = 0;
 	EvolutionComponent drawingComponent;
