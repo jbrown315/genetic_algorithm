@@ -31,6 +31,7 @@ public class EvolutionViewer {
 	PopulationViewer popViewer;
 	JButton run;
 	JButton reset;
+	JLabel main;
 	
 	boolean graphed = false;
 	
@@ -202,6 +203,7 @@ public class EvolutionViewer {
 					checked = crossover.isSelected();
 					paperResult = paper.isSelected();
 					terminateStatus = Integer.valueOf(terminate.getText());
+					main = title;
 					if(!paperResult) {
 						if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100 && terminateStatus  >= 0 && terminateStatus <= 100) {
 							if(choice.equals("Truncate")) {
@@ -263,9 +265,13 @@ public class EvolutionViewer {
 							if(drawingComponent.runs <= 1) {
 								method = 3;
 								popViewer.drawingComponent.population = new Population(1000, 20, true);
+								generations = 50;
+								bestFitViewer.viewerFrame.dispose();
 								popViewer.drawingComponent.population.r = genLen / 10;
 								popViewer.drawingComponent.population.fitmethod = 3;
 								drawingComponent.gens = generations;
+								drawingComponent.paper = paperResult;
+								main.setText("Reproduce Scientific Paper Result");
 							}
 							
 							t.start();

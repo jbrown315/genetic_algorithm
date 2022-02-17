@@ -30,8 +30,12 @@ public class Population {
 	double numInRow;
 	double numOfRows;
 	double lastRowCount;
-	
+
 	int unique;
+	
+	double bookCorrect;
+	double bookIncorrect;
+	double bookUndecided;
 	
 	/**
 	 * Population constructor with zero parameters
@@ -513,6 +517,10 @@ public class Population {
 		Random rand = new Random();
 		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
 		
+		bookCorrect = 0;
+		bookIncorrect = 0;
+		bookUndecided = 0;
+		
 
 		for(int i = 0; i < population.size(); i++) {
 				int current = 0;
@@ -527,12 +535,24 @@ public class Population {
 					}
 				}
 				double before = (double) current / (double) tot;
-				for(int x = 0; x < 10; x++) {
+				for(int x = 0; x < 100; x++) {
 					temp = new Chromosome(r*10);
 					temp2 = new ArrayList<Integer>();
 					for(int bit : population.get(i).bits) {
 						if(bit == 2) {
-							temp2.add(rand.nextInt(2));
+							int q = rand.nextInt(2);
+							if(q == 1) {
+								temp2.add(2);
+							}
+							else {
+								q = rand.nextInt(2);
+								if(q == 1) {
+									temp2.add(q);
+								}
+								else {
+									temp2.add(q);
+								}
+							}
 						}
 						else{
 							temp2.add(bit);
@@ -545,13 +565,20 @@ public class Population {
 					}
 					double newReal = (double) newFit / (double) temp.bits.size();
 					if(before < newReal) {
+						temp.fitness = (int) newReal;
 						finalpop.add(temp);
+						bookIncorrect += 1;
 						break;
 					}
 				}
 				if(finalpop.size() != i + 1) {
+					population.get(i).fitness = (int) before;
 					finalpop.add(population.get(i));
+					bookCorrect += 1;
 				}
+				bookUndecided = 1000 - (bookCorrect);
+				
+				
 		}
 		population = new ArrayList<Chromosome>();
 		for(int i = 0; i < finalpop.size(); i++) {
@@ -563,6 +590,34 @@ public class Population {
 			temp.bits = temp2;
 			population.add(temp);
 		}
+		ArrayList<Chromosome> newPopAgain = new ArrayList<Chromosome>();
+		for(int x = 0; x < 1000; x++) {
+			int first = rand.nextInt(20);
+			int next = rand.nextInt(20);
+			Chromosome newChr1 = new Chromosome(r*10);
+			ArrayList<ArrayList<Integer>> fix = new ArrayList<ArrayList<Integer>>();
+			fix = crossover(population.get(first).bits, population.get(next).bits);
+			newChr1.bits = new ArrayList<Integer>();
+			for(int bit : fix.get(0)) {
+				newChr1.bits.add(bit);
+			}
+			newPopAgain.add(newChr1);
+		}
+		population = new ArrayList<Chromosome>();
+		for(int i = 0; i < newPopAgain.size(); i++) {
+			temp = new Chromosome(r*10);
+			temp2 = new ArrayList<Integer>();
+			for(int bit : newPopAgain.get(i).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			population.add(temp);
+		}
+		population = sortByFit(population);
+//		System.out.println("BOOK CORRECT: " + bookCorrect);
+//		System.out.println("BOOK INCORRECT: " + bookIncorrect);
+//		System.out.println("BOOK UNDECIDED: " + bookUndecided);
+
 	}
 	
 	

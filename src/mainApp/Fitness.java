@@ -66,6 +66,9 @@ public class Fitness {
 		int total = 0;
 		for(int bit : this.chromosome.bits) {
 			total += bit;
+			if(bit == 2) {
+				total -= bit;
+			}
 		}
 		return total;
 	}
