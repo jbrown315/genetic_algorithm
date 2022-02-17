@@ -68,6 +68,22 @@ public class Population {
 			population = newPop;
 		}
 	}
+	
+	public Population(int len, int genomes, boolean paper) {
+		if(newPop == null) {
+			population = new ArrayList<Chromosome>();
+			for(int i = 0; i < len; i++) {
+				Chromosome temp = new Chromosome(genomes, true);
+				temp.rows = r;
+				population.add(temp);
+//				System.out.println("TEST");
+			}
+			
+		}
+		else {
+			population = newPop;
+		}
+	}
 	/**
 	 * draws the population onto the provided graphics
 	 * @param g2
@@ -489,6 +505,64 @@ public class Population {
 		}
 		aveFit = aveFit/population.size();
 		worstFit = population.get(population.size() - 1).fitness;
+	}
+	
+	public void paper(int mrate) {
+		Chromosome temp = new Chromosome(r*10);
+		ArrayList<Integer> temp2 = new ArrayList<Integer>();
+		Random rand = new Random();
+		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+		
+
+		for(int i = 0; i < population.size(); i++) {
+				int current = 0;
+				int tot = 0;
+				for(int bit : population.get(i).bits) {
+					if(bit == 1) {
+						tot++;
+						current++;
+					}
+					else if(bit == 0) {
+						tot++;
+					}
+				}
+				double before = (double) current / (double) tot;
+				for(int x = 0; x < 10; x++) {
+					temp = new Chromosome(r*10);
+					temp2 = new ArrayList<Integer>();
+					for(int bit : population.get(i).bits) {
+						if(bit == 2) {
+							temp2.add(rand.nextInt(2));
+						}
+						else{
+							temp2.add(bit);
+						}
+					}
+					temp.bits = temp2;
+					int newFit = 0;
+					for(int bit : temp.bits) {
+						newFit += bit;
+					}
+					double newReal = (double) newFit / (double) temp.bits.size();
+					if(before < newReal) {
+						finalpop.add(temp);
+						break;
+					}
+				}
+				if(finalpop.size() != i + 1) {
+					finalpop.add(population.get(i));
+				}
+		}
+		population = new ArrayList<Chromosome>();
+		for(int i = 0; i < finalpop.size(); i++) {
+			temp = new Chromosome(r*10);
+			temp2 = new ArrayList<Integer>();
+			for(int bit : finalpop.get(i).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			population.add(temp);
+		}
 	}
 	
 	

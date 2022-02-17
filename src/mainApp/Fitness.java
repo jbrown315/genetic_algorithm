@@ -62,4 +62,12 @@ public class Fitness {
 		return total;
 	}
 	
+	public int paper() {
+		int total = 0;
+		for(int bit : this.chromosome.bits) {
+			total += bit;
+		}
+		return total;
+	}
+	
 }

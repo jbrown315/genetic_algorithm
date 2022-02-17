@@ -44,6 +44,8 @@ public class EvolutionViewer {
 	boolean checked;
 	int terminateStatus;
 	
+	boolean paperResult;
+	
 	int method;
 
 	// *********************************************************************
@@ -101,6 +103,9 @@ public class EvolutionViewer {
 		JLabel term = new JLabel("Terminate?");
 		JTextField terminate = new JTextField(3);
 		
+		JLabel paperRes = new JLabel("Reproduce Paper Result?");
+		JCheckBox paper = new JCheckBox();
+		
 		this.viewerFrame.add(control, BorderLayout.SOUTH);
 
 		rate.setFont(new Font("Serif", Font.BOLD, 10));
@@ -123,13 +128,16 @@ public class EvolutionViewer {
 		fitSel.setFont(new Font("Serif", Font.BOLD, 10));
 		term.setFont(new Font("Serif", Font.BOLD, 10));
 		terminate.setFont(new Font("Serif", Font.BOLD, 10));
+		paperRes.setFont(new Font("Serif", Font.BOLD, 10));
+		paper.setFont(new Font("Serif", Font.BOLD, 10));
 
 		input.setText("1");
 		input2.setText("100");
 		input3.setText("100");
 		input4.setText("100");
-		input5.setText("0");
+		input5.setText("1");
 		terminate.setText("100");
+//		crossover.setSelected(true);
 
 		panel.add(rate);
 		panel.add(input);
@@ -146,6 +154,8 @@ public class EvolutionViewer {
 		panel.add(elite);
 		panel.add(input5);
 		
+		panel2.add(paperRes);
+		panel2.add(paper);
 		panel2.add(term);
 		panel2.add(terminate);
 		panel2.add(fitSel);
@@ -190,17 +200,56 @@ public class EvolutionViewer {
 					genLen = Integer.valueOf(input4.getText());
 					elitism = Integer.valueOf(input5.getText());
 					checked = crossover.isSelected();
+					paperResult = paper.isSelected();
 					terminateStatus = Integer.valueOf(terminate.getText());
-					if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100 && terminateStatus  >= 0 && terminateStatus <= 100) {
-						if(choice.equals("Truncate")) {
-							method = 0;
-						}
-						else if(choice.equals("Roulette Wheel")) {
-							method = 1;
+					if(!paperResult) {
+						if(mrate >= 0 && mrate <= 100 && popSize > 1 && popSize <= 1000 && generations >= 0 && generations <= 1000 && genLen >= 0 && genLen <= 100 && elitism >= 0 && elitism <= 100 && terminateStatus  >= 0 && terminateStatus <= 100) {
+							if(choice.equals("Truncate")) {
+								method = 0;
+							}
+							else if(choice.equals("Roulette Wheel")) {
+								method = 1;
+							}
+							else {
+								method = 2;
+							}
+							if(run.getText().equals("Start")) {
+								run.setText("Stop");
+							}
+							else {
+								run.setText("Start");
+							}
+							if(run.getText().equals("Start")) {
+								t.stop();
+							}
+							else {
+								if(drawingComponent.runs <= 1) {
+									popViewer.drawingComponent.population = new Population(popSize, genLen);
+									popViewer.drawingComponent.population.r = genLen / 10;
+									popViewer.drawingComponent.population.elite = elitism;
+									popViewer.drawingComponent.population.cross = checked;
+									if(fitChoice.equals("All Ones")) {
+										popViewer.drawingComponent.population.fitmethod = 0;
+									}
+									else if(fitChoice.equals("Smile")) {
+										popViewer.drawingComponent.population.fitmethod = 1;
+									}
+									else {
+										popViewer.drawingComponent.population.fitmethod = 2;
+									}
+									drawingComponent.gens = generations;
+								}
+								
+								t.start();
+							}
+							
 						}
 						else {
-							method = 2;
+							System.out.println("Invalid Inputs!");
 						}
+					}
+					else {
+						//RUN PAPER MODEL HERE
 						if(run.getText().equals("Start")) {
 							run.setText("Stop");
 						}
@@ -212,28 +261,15 @@ public class EvolutionViewer {
 						}
 						else {
 							if(drawingComponent.runs <= 1) {
-								popViewer.drawingComponent.population = new Population(popSize, genLen);
+								method = 3;
+								popViewer.drawingComponent.population = new Population(1000, 20, true);
 								popViewer.drawingComponent.population.r = genLen / 10;
-								popViewer.drawingComponent.population.elite = elitism;
-								popViewer.drawingComponent.population.cross = checked;
-								if(fitChoice.equals("All Ones")) {
-									popViewer.drawingComponent.population.fitmethod = 0;
-								}
-								else if(fitChoice.equals("Smile")) {
-									popViewer.drawingComponent.population.fitmethod = 1;
-								}
-								else {
-									popViewer.drawingComponent.population.fitmethod = 2;
-								}
+								popViewer.drawingComponent.population.fitmethod = 3;
 								drawingComponent.gens = generations;
 							}
 							
 							t.start();
 						}
-						
-					}
-					else {
-						System.out.println("Invalid Inputs!");
 					}
 				}
 			}
@@ -269,6 +305,9 @@ public class EvolutionViewer {
 				else if(method == 2) {
 					popViewer.drawingComponent.population.ranked(mrate);
 				}
+				else if(method == 3) {
+					popViewer.drawingComponent.population.paper(mrate);
+				}
 				else {
 					System.out.println("???");
 				}
@@ -291,7 +330,7 @@ public class EvolutionViewer {
 					run.doClick();
 					run.setText("Finished!");
 				}
-				else if(popViewer.drawingComponent.population.bestFit == terminateStatus) {
+				else if(popViewer.drawingComponent.population.bestFit == terminateStatus || popViewer.drawingComponent.population.bestFit / popViewer.drawingComponent.population.population.get(0).bits.size() == 1) {
 					run.doClick();
 					run.setText("Finished!");
 				}

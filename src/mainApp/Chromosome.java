@@ -24,6 +24,27 @@ public class Chromosome {
 		rows = total/10;
 	}
 	
+	public Chromosome(int total, boolean book) {
+		bits = new ArrayList<Integer>();
+		Random random = new Random();
+		for(int x = 0; x < total; x++) {
+			int temp = random.nextInt(2);
+			if(temp == 1) {
+				bits.add(2);
+			}
+			else {
+				temp = random.nextInt(2);
+				if(temp == 1) {
+					bits.add(temp);
+				}
+				else {
+					bits.add(temp);
+				}
+			}
+		}
+		rows = total/10;
+	}
+	
 	public void drawOn(Graphics2D g2) {
 		
 		int rowCount = 0;
@@ -75,6 +96,12 @@ public class Chromosome {
 				if(bits.get(i) == 1) {
 					bits.set(i, 0);
 				}
+//				if(bits.get(i) == 2) {
+//					bits.set(i, rand.nextInt(2));
+//					if(bits.get(i) == 0) {
+//						bits.set(i, 2);
+//					}
+//				}
 				else {
 					bits.set(i, 1);
 				}
