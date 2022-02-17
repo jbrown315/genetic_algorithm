@@ -109,19 +109,19 @@ public class EvolutionComponent extends JComponent {
 		
 		
 		g2d.setColor(Color.GREEN);
-		g2d.fillRect(600, 120, 12, 12);
+		g2d.fillRect(580, 120, 12, 12);
 		g2d.setColor(Color.ORANGE);
-		g2d.fillRect(600, 140, 12, 12);
+		g2d.fillRect(580, 140, 12, 12);
 		g2d.setColor(Color.RED);
-		g2d.fillRect(600, 160, 12, 12);
+		g2d.fillRect(580, 160, 12, 12);
 		g2d.setColor(Color.YELLOW);
-		g2d.fillRect(600, 180, 12, 12);
+		g2d.fillRect(580, 180, 12, 12);
 		
 		g2d.setColor(Color.BLACK);
-		g2d.drawString("Best Fit: " + population.bestFit, 620, 130);
-		g2d.drawString("Ave Fit: " + population.aveFit, 620, 150);
-		g2d.drawString("Worst Fit: " + population.worstFit, 620, 170);
-		g2d.drawString("# of Unique: " + population.unique, 620, 190);
+		g2d.drawString("Best Fit: " + population.bestFit, 600, 130);
+		g2d.drawString("Ave Fit: " + population.aveFit, 600, 150);
+		g2d.drawString("Worst Fit: " + population.worstFit, 600, 170);
+		g2d.drawString("# of Unique: " + population.unique, 600, 190);
 
 	} // paintComponent
 }

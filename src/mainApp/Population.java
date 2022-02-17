@@ -207,7 +207,19 @@ public class Population {
 			}
 			else {
 				if(cross == true) {
-					crossover(population.get(i).bits, population.get(i+1).bits);
+					ArrayList<ArrayList<Integer>> fix = new ArrayList<ArrayList<Integer>>();
+					if(i+1 != population.size()) {
+						fix = crossover(population.get(i).bits, population.get(i+1).bits);
+						population.get(i).bits = new ArrayList<Integer>();
+						population.get(i+1).bits = new ArrayList<Integer>();
+						
+						for(int bit : fix.get(0)) {
+							population.get(i).bits.add(bit);
+						}
+						for(int bit : fix.get(1)) {
+							population.get(i+1).bits.add(bit);
+						}
+					}
 				}
 				population.set(i, population.get(i).mutate(mrate));
 				if(fitmethod == 0) {
@@ -326,7 +338,19 @@ public class Population {
 				}
 				else {
 					if(cross == true) {
-						crossover(population.get(i).bits, population.get(i+1).bits);
+						ArrayList<ArrayList<Integer>> fix = new ArrayList<ArrayList<Integer>>();
+						if(i+1 != population.size()) {
+							fix = crossover(population.get(i).bits, population.get(i+1).bits);
+							population.get(i).bits = new ArrayList<Integer>();
+							population.get(i+1).bits = new ArrayList<Integer>();
+							
+							for(int bit : fix.get(0)) {
+								population.get(i).bits.add(bit);
+							}
+							for(int bit : fix.get(1)) {
+								population.get(i+1).bits.add(bit);
+							}
+						}
 					}
 					population.set(i, population.get(i).mutate(mrate));
 					if(fitmethod == 0) {
@@ -429,7 +453,19 @@ public class Population {
 			}
 			else {
 				if(cross == true) {
-					crossover(population.get(i).bits, population.get(i+1).bits);
+					ArrayList<ArrayList<Integer>> fix = new ArrayList<ArrayList<Integer>>();
+					if(i+1 != population.size()) {
+						fix = crossover(population.get(i).bits, population.get(i+1).bits);
+						population.get(i).bits = new ArrayList<Integer>();
+						population.get(i+1).bits = new ArrayList<Integer>();
+						
+						for(int bit : fix.get(0)) {
+							population.get(i).bits.add(bit);
+						}
+						for(int bit : fix.get(1)) {
+							population.get(i+1).bits.add(bit);
+						}
+					}
 				}
 				population.set(i, population.get(i).mutate(mrate));
 				if(fitmethod == 0) {
@@ -481,13 +517,16 @@ public class Population {
 		return newpop;
 	}
 	
-	public void crossover(ArrayList<Integer> one, ArrayList<Integer> two) {
+	public ArrayList<ArrayList<Integer>> crossover(ArrayList<Integer> one, ArrayList<Integer> two) {
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> p1 = new ArrayList<Integer>();
 		ArrayList<Integer> p2 = new ArrayList<Integer>();
 		ArrayList<Integer> p3 = new ArrayList<Integer>();
 		ArrayList<Integer> p4 = new ArrayList<Integer>();
+		Random rand = new Random();
+		int random = rand.nextInt(one.size());
 		for(int a = 0; a < one.size(); a++) {
-			if(a < one.size()/2) {
+			if(a < random) {
 				p1.add(one.get(a));
 			}
 			else {
@@ -495,7 +534,7 @@ public class Population {
 			}
 		}
 		for(int a = 0; a < two.size(); a++) {
-			if(a < two.size()/2) {
+			if(a < random) {
 				p3.add(two.get(a));
 			}
 			else {
@@ -508,6 +547,9 @@ public class Population {
 		one.addAll(p4);
 		two.addAll(p3);
 		two.addAll(p2);
+		result.add(one);
+		result.add(two);
+		return result;
 	}
 	
 	public int unique(ArrayList<Chromosome> pop) {

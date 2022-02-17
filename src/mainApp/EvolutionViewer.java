@@ -215,6 +215,7 @@ public class EvolutionViewer {
 								popViewer.drawingComponent.population = new Population(popSize, genLen);
 								popViewer.drawingComponent.population.r = genLen / 10;
 								popViewer.drawingComponent.population.elite = elitism;
+								popViewer.drawingComponent.population.cross = checked;
 								if(fitChoice.equals("All Ones")) {
 									popViewer.drawingComponent.population.fitmethod = 0;
 								}
