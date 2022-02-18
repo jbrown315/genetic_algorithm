@@ -1,7 +1,9 @@
 Milestone 4: Extras! (50 points)
 Record here the list of Extra Features you have discussed with your TA
 
-1)
+1) Added the Truncate* function which will randomly have a chromosome die off, if a
+chromosome does die, then the chance that another will die greatly increases. Ultimately
+they will either all die off or reach the total fitness.
 2)
 3)
 ...
