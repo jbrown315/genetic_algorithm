@@ -515,7 +515,6 @@ public class Population {
 	public void truncateSpecial(int mrate) {
 		Chromosome temp = new Chromosome(r*10);
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
-		boolean plague = false;
 		
 		population = sortByFit(population);
 		
