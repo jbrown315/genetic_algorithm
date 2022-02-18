@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Color;
 
 
 
@@ -355,8 +354,8 @@ public class EvolutionViewer {
 					run.setText("Finished!");
 					popViewer.viewerFrame.dispose();
 					bestFitViewer.viewerFrame.dispose();
-					drawingComponent.getGraphics().drawString("Population Die Off", 300, 120);
-					System.out.println("BROKEN");
+					drawingComponent.getGraphics().drawString("Population Die Off", 600, 35);
+					
 				}
 			}
 		});
