@@ -20,6 +20,7 @@ public class Population {
 	int aveFit = 0;
 	int worstFit = 0;
 	int len = 100;
+	int factor = 10000;
 	
 	int r = 10;
 	int elite = 0;
@@ -220,7 +221,7 @@ public class Population {
 				else if(fitmethod == 1) {
 					population.get(i).fitness = fit.matchSmile();
 				}
-				else {
+				else if(fitmethod == 2) {
 					population.get(i).fitness = fit.consecutive();
 				}
 				x++;
@@ -248,7 +249,7 @@ public class Population {
 				else if(fitmethod == 1) {
 					population.get(i).fitness = fit.matchSmile();
 				}
-				else {
+				else if(fitmethod == 2) {
 					population.get(i).fitness = fit.consecutive();
 				}
 				x++;
@@ -351,7 +352,7 @@ public class Population {
 					else if(fitmethod == 1) {
 						population.get(i).fitness = fit.matchSmile();
 					}
-					else {
+					else if(fitmethod == 2) {
 						population.get(i).fitness = fit.consecutive();
 					}
 					x++;
@@ -379,7 +380,7 @@ public class Population {
 					else if(fitmethod == 1) {
 						population.get(i).fitness = fit.matchSmile();
 					}
-					else {
+					else if(fitmethod == 2) {
 						population.get(i).fitness = fit.consecutive();
 					}
 					x++;
@@ -466,7 +467,7 @@ public class Population {
 				else if(fitmethod == 1) {
 					population.get(i).fitness = fit.matchSmile();
 				}
-				else {
+				else if(fitmethod == 2) {
 					population.get(i).fitness = fit.consecutive();
 				}
 				x++;
@@ -494,7 +495,7 @@ public class Population {
 				else if(fitmethod == 1) {
 					population.get(i).fitness = fit.matchSmile();
 				}
-				else {
+				else if(fitmethod == 2) {
 					population.get(i).fitness = fit.consecutive();
 				}
 				x++;
@@ -509,6 +510,121 @@ public class Population {
 		}
 		aveFit = aveFit/population.size();
 		worstFit = population.get(population.size() - 1).fitness;
+	}
+	
+	public void truncateSpecial(int mrate) {
+		Chromosome temp = new Chromosome(r*10);
+		ArrayList<Integer> temp2 = new ArrayList<Integer>();
+		boolean plague = false;
+		
+		population = sortByFit(population);
+		
+		ArrayList<Chromosome> finalpop = new ArrayList<Chromosome>();
+		boolean odd = false;
+		if(population.size()%2 == 1) {
+			odd = true;
+		}
+		for(int i = 0; i < population.size()/2; i++) {
+			temp = new Chromosome(r*10);
+			temp2 = new ArrayList<Integer>();
+			for(int bit : population.get(i).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			finalpop.add(temp);
+		}
+
+		population = new ArrayList<Chromosome>();
+		for(int i = 0; i < finalpop.size(); i++) {
+			for(int x = 0; x < 2; x++) {
+				temp = new Chromosome(r*10);
+				temp2 = new ArrayList<Integer>();
+				for(int bit : finalpop.get(i).bits) {
+					temp2.add(bit);
+				}
+				temp.bits = temp2;
+				population.add(temp);
+			}
+		}
+		if(odd) {
+			temp = new Chromosome(r*10);
+			temp2 = new ArrayList<Integer>();
+			for(int bit : finalpop.get(finalpop.size() - 1).bits) {
+				temp2.add(bit);
+			}
+			temp.bits = temp2;
+			population.add(temp);
+		}
+		population = sortByFit(population);
+		int x = 0;
+		
+		Random rand = new Random();
+		for(int i = 0; i < population.size(); i++) {
+			Fitness fit = new Fitness(population.get(i));
+			
+			if(x < elite) {
+				if(fitmethod == 0) {
+					population.get(i).fitness = fit.countOnes();
+				}
+				else if(fitmethod == 1) {
+					population.get(i).fitness = fit.matchSmile();
+				}
+				else if(fitmethod == 2) {
+					population.get(i).fitness = fit.consecutive();
+				}
+				x++;
+			}
+			else {
+				if(cross == true) {
+					ArrayList<ArrayList<Integer>> fix = new ArrayList<ArrayList<Integer>>();
+					if(i+1 != population.size()) {
+						fix = crossover(population.get(i).bits, population.get(i+1).bits);
+						population.get(i).bits = new ArrayList<Integer>();
+						population.get(i+1).bits = new ArrayList<Integer>();
+						
+						for(int bit : fix.get(0)) {
+							population.get(i).bits.add(bit);
+						}
+						for(int bit : fix.get(1)) {
+							population.get(i+1).bits.add(bit);
+						}
+					}
+				}
+				
+				population.set(i, population.get(i).mutate(mrate));
+				
+				if(fitmethod == 0) {
+					population.get(i).fitness = fit.countOnes();
+				}
+				else if(fitmethod == 1) {
+					population.get(i).fitness = fit.matchSmile();
+				}
+				else if(fitmethod == 2) {
+					population.get(i).fitness = fit.consecutive();
+				}
+				x++;
+				int choice = rand.nextInt(factor);
+				if(choice == 1) {
+					if(factor > 1000) {
+						factor -= 1000;
+					}
+					else {
+						factor = 2;
+					}
+					population.remove(i);
+				}
+			}
+		}
+		population = sortByFit(population);
+		unique = unique(population);
+		bestFit = population.get(0).fitness;
+		aveFit = 0;
+		for(Chromosome chr : population) {
+			aveFit += chr.fitness;
+		}
+		aveFit = aveFit/population.size();
+		worstFit = population.get(population.size() - 1).fitness;
+
 	}
 	
 	public void paper(int mrate) {

@@ -72,5 +72,4 @@ public class Fitness {
 		}
 		return total;
 	}
-	
 }

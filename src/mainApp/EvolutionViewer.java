@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Color;
+
 
 
 import javax.swing.JButton;
@@ -44,8 +46,7 @@ public class EvolutionViewer {
 	boolean checked;
 	int terminateStatus;
 	
-	boolean paperResult;
-	
+	boolean paperResult;	
 	int method;
 
 	// *********************************************************************
@@ -82,7 +83,7 @@ public class EvolutionViewer {
 		JLabel rate = new JLabel("M Rate: _/N");
 		JTextField input = new JTextField(3);
 		JLabel select = new JLabel("Selection");
-		String[] options = {"Truncate", "Roulette Wheel", "Ranked"};
+		String[] options = {"Truncate", "Roulette Wheel", "Ranked", "Truncate*"};
 		JComboBox<String> selection = new JComboBox<String>(options);
 		JLabel cross = new JLabel("Crossover");
 		JCheckBox crossover = new JCheckBox();
@@ -211,6 +212,9 @@ public class EvolutionViewer {
 							else if(choice.equals("Roulette Wheel")) {
 								method = 1;
 							}
+							else if(choice.equals("Truncate*")) {
+								method = 4;
+							}
 							else {
 								method = 2;
 							}
@@ -235,7 +239,7 @@ public class EvolutionViewer {
 									else if(fitChoice.equals("Smile")) {
 										popViewer.drawingComponent.population.fitmethod = 1;
 									}
-									else {
+									else if(fitChoice.equals("Consecutive Ones")) {
 										popViewer.drawingComponent.population.fitmethod = 2;
 									}
 									drawingComponent.gens = generations;
@@ -301,46 +305,59 @@ public class EvolutionViewer {
 		t = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(method == 0) {
-					popViewer.drawingComponent.population.truncate(mrate);
-				}
-				else if(method == 1) {
-					popViewer.drawingComponent.population.roulette(mrate);
-				}
-				else if(method == 2) {
-					popViewer.drawingComponent.population.ranked(mrate);
-				}
-				else if(method == 3) {
-					popViewer.drawingComponent.population.paper(mrate);
+				if(popViewer.drawingComponent.population.population.size() != 1) {
+					if(method == 0) {
+						popViewer.drawingComponent.population.truncate(mrate);
+					}
+					else if(method == 1) {
+						popViewer.drawingComponent.population.roulette(mrate);
+					}
+					else if(method == 2) {
+						popViewer.drawingComponent.population.ranked(mrate);
+					}
+					else if(method == 3) {
+						popViewer.drawingComponent.population.paper(mrate);
+					}
+					else if(method == 4) {
+						popViewer.drawingComponent.population.truncateSpecial(mrate);
+					}
+					else {
+						System.out.println("???");
+					}
+					int temp = 0;
+					if(popViewer.drawingComponent.population.lastRowCount == 0) {
+						temp = 1;
+					}
+					else if(popViewer.drawingComponent.population.lastRowCount > popViewer.drawingComponent.population.numInRow) {
+						temp = 3;
+					}
+					else {
+						temp = 2;
+					}
+					popViewer.viewerFrame.setSize(new Dimension(popViewer.drawingComponent.population.width *12* ((int) (popViewer.drawingComponent.population.numInRow)) + 50, popViewer.drawingComponent.population.height * 12 * ((int) (popViewer.drawingComponent.population.numOfRows) + temp) + 50));
+					popViewer.drawingComponent.repaint();
+					drawingComponent.repaint();
+					drawingComponent.runs++;
+					drawingComponent.population = popViewer.drawingComponent.population;
+					if(drawingComponent.runs >= generations) {
+						run.doClick();
+						run.setText("Finished!");
+					}
+					else if(popViewer.drawingComponent.population.bestFit == terminateStatus || popViewer.drawingComponent.population.bestFit / popViewer.drawingComponent.population.population.get(0).bits.size() == 1) {
+						run.doClick();
+						run.setText("Finished!");
+					}
+					bestFitViewer.drawingComponent.chromosome = popViewer.drawingComponent.population.population.get(0);
+					bestFitViewer.drawingComponent.repaint();
 				}
 				else {
-					System.out.println("???");
-				}
-				int temp = 0;
-				if(popViewer.drawingComponent.population.lastRowCount == 0) {
-					temp = 1;
-				}
-				else if(popViewer.drawingComponent.population.lastRowCount > popViewer.drawingComponent.population.numInRow) {
-					temp = 3;
-				}
-				else {
-					temp = 2;
-				}
-				popViewer.viewerFrame.setSize(new Dimension(popViewer.drawingComponent.population.width *12* ((int) (popViewer.drawingComponent.population.numInRow)) + 50, popViewer.drawingComponent.population.height * 12 * ((int) (popViewer.drawingComponent.population.numOfRows) + temp) + 50));
-				popViewer.drawingComponent.repaint();
-				drawingComponent.repaint();
-				drawingComponent.runs++;
-				drawingComponent.population = popViewer.drawingComponent.population;
-				if(drawingComponent.runs >= generations) {
 					run.doClick();
 					run.setText("Finished!");
+					popViewer.viewerFrame.dispose();
+					bestFitViewer.viewerFrame.dispose();
+					drawingComponent.getGraphics().drawString("Population Die Off", 300, 120);
+					System.out.println("BROKEN");
 				}
-				else if(popViewer.drawingComponent.population.bestFit == terminateStatus || popViewer.drawingComponent.population.bestFit / popViewer.drawingComponent.population.population.get(0).bits.size() == 1) {
-					run.doClick();
-					run.setText("Finished!");
-				}
-				bestFitViewer.drawingComponent.chromosome = popViewer.drawingComponent.population.population.get(0);
-				bestFitViewer.drawingComponent.repaint();
 			}
 		});
 	}
